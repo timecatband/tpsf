@@ -102,3 +102,41 @@ class PhaseDistortionFieldEffect(nn.Module):
 
     def forward(self, x, sr):
         return spectrogram_phase_modify_audio(x, sr, self.phase_distortion_field)
+    
+class PhaseConvolverEffect(nn.Module):
+    def __init__(self):
+        super(PhaseConvolverEffect, self).__init__()
+        self.convolutions = nn.Sequential(
+            nn.Conv2d(1, 16, 3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(16, 16, 3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(16, 1, 3, padding=1)
+        )
+
+    def forward(self, x, sr):
+        audio_tensor = x
+        n_fft = 2048
+        hop_length = 128
+        window = torch.hann_window(n_fft).to(audio_tensor.device)
+        # Cast to float32
+        audio_tensor = audio_tensor.to(torch.float32)
+
+        # Compute complex spectrogram using STFT
+        spectrogram = torch.stft(audio_tensor, n_fft=n_fft, hop_length=hop_length, window=window, return_complex=True)
+        print("spectrogram shape", spectrogram.shape)
+        print("spectrogram dtype", spectrogram.dtype)
+        print("original audio shape", audio_tensor.shape)
+
+        magnitudes = torch.abs(spectrogram[0])
+        phases = spectrogram[1].unsqueeze(0)  # Unsqueeze to match the shape of the magnitude spectrogram
+        phases = torch.angle(phases)    
+        phases = torch.unsqueeze(phases, -1)
+        phases = torch.permute(phases, (0,3, 1,2))
+        phases = self.convolutions(phases)
+        phases = torch.permute(phases, (0,2,3,1))
+        print("Phases shape", phases.shape)
+        transformed_phases = torch.squeeze(phases, -1)
+        modified_spectrogram = magnitudes * torch.exp(1j * transformed_phases)
+        reconstructed_audio = torch.istft(modified_spectrogram, n_fft=n_fft, hop_length=hop_length, window=window)
+        return reconstructed_audio
