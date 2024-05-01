@@ -62,7 +62,9 @@ def spectrogram_phase_modify_audio(audio_tensor, audio_sample_rate, phase_transf
 
     # Vectorized Phase Transformation (single batch)
     x_coords, y_coords = torch.meshgrid(torch.arange(spectrogram.shape[1]),
-                                        torch.arange(spectrogram.shape[2])).to(audio_tensor.device)
+                                        torch.arange(spectrogram.shape[2]))
+    x_coords = x_coords.to(audio_tensor.device)
+    y_coords = y_coords.to(audio_tensor.device)
     all_phases = phases[0, x_coords, y_coords]
     
     # Apply phase transform batch by batch ensuring we process all samples
