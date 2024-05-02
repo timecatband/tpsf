@@ -3,35 +3,9 @@ sample_rate = 44100
 import sys
 import torch
 import torchaudio
-from synth.complex_oscillator import LearnableSineOscillator
+from synth.oscillator import LearnableSineOscillator
 import math
 import torch.nn as nn
-
-class LearnableSineOscillatorNonComplex(nn.Module):
-    def __init__(self, freq_rad, sr):
-        super(LearnableSineOscillatorNonComplex, self).__init__()
-        self.freq_rad = freq_rad
-        self.sr = sr
-        self.phase = nn.Parameter(torch.tensor([0.0]))
-        self.phase.requires_grad = True
-        self.amplitude_parameters = nn.Parameter(torch.tensor([1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]))
-    def forward(self, num_samples):
-        time = torch.linspace(0, num_samples / self.sr, num_samples)
-        x = self.phase + self.freq_rad * time * sample_rate
-        waveform = torch.sin(x)
-        # Add harmonics
-        waveform += torch.sin(2 * x) * self.amplitude_parameters[0].clamp(0, 1)
-        waveform += torch.sin(3 * x) * self.amplitude_parameters[1].clamp(0, 1)
-        waveform += torch.sin(4 * x) * self.amplitude_parameters[2].clamp(0, 1)
-        waveform += torch.sin(5 * x) * self.amplitude_parameters[3].clamp(0, 1)
-        waveform += torch.sin(6 * x) * self.amplitude_parameters[4].clamp(0, 1)
-        waveform += torch.sin(7 * x) * self.amplitude_parameters[5].clamp(0, 1)
-        waveform += torch.sin(8 * x) * self.amplitude_parameters[6].clamp(0, 1)
-
-        return waveform
-    def print(self):
-        print("freq_rad: ", self.freq_rad)
-        print("phase: ", self.phase)
 
 def initialize_oscillators(note_events, sr):
     oscillators = {}

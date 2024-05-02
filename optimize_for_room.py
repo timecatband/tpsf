@@ -1,5 +1,6 @@
 from effects.reverb import IRReverb
 from effects.equalizers import BiquadEq, NotchFilter
+from goals.reverb import ReverbBoostingLoss
 import torch
 import torch.nn as nn
 import torchaudio
@@ -8,8 +9,6 @@ ir = sys.argv[1]
 audio_file = sys.argv[2]
 ir, sr = torchaudio.load(ir)
 audio_file, sr = torchaudio.load(audio_file)
-# Clip audio to only seconds 20-30
-audio_file = audio_file[:, 60*sr:80*sr]
 
 reverb = IRReverb(ir)
 # Ensure reverb parameters are frozen (no training)
@@ -22,6 +21,9 @@ eq = NotchFilter(sr)#BiquadEq(sr)
 effect_chain = nn.Sequential(eq, reverb)
 
 optim = torch.optim.AdamW(eq.parameters(), lr=0.01)
+loss_fn = ReverbBoostingLoss(reverb, audio_file)
+
+
 for i in range(40):
     optim.zero_grad()
     eqed_audio = eq(audio_file)
@@ -32,8 +34,7 @@ for i in range(40):
     # Clip
     reverbed_audio = torch.clamp(reverbed_audio, -1, 1)
     revebered_no_eq = torch.clamp(reverb_no_eq, -1, 1)
-    loss = -(reverbed_audio.abs().sum()-reverb_no_eq.abs().sum())
-    loss += torch.sqrt((audio_file.abs().sum()-eqed_audio.abs().sum())**2)
+    loss = loss_fn(eqed_audio)
    # loss = -(reverbed_audio.abs().sum()-eqed_audio.abs().sum())
     print("Step", i, "Loss", loss.item())
     print("Eq params", eq.print())
