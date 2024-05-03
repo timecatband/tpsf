@@ -12,6 +12,7 @@ class LearnableMidiSynth(nn.Module):
         output = torch.zeros(duration_samples)
         for freq_rad, start_sample, end_sample in note_events:
             if start_sample >= duration_samples:
+                print("Skipping note" + str(start_sample) + " " + str(end_sample) + " " + str(duration_samples))
                 continue
             output_length = min(end_sample, duration_samples) - start_sample
             segment = self.synth(freq_rad, output_length)

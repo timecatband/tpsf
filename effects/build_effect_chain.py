@@ -13,6 +13,7 @@ def process_parameters(param_str):
     if param_str:
         for param in param_str.split(','):
             key, value = param.split('=')
+            print("Parsing param", param)
             try:
                 params[key] = int(value)  # Try converting to int
             except ValueError:

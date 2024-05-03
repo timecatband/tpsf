@@ -14,7 +14,7 @@ target_audio = sys.argv[2]
 target_audio, sr = torchaudio.load(target_audio)
 print("sr", sr)
 midi_events = process_midi(midi_file, sr)
-effect_chain = build_effect_chain("Envelope[stages=3],SoftClipping")
+effect_chain = build_effect_chain("Envelope[stages=3],SoftClipping,ParametricIRReverb[length=44100,sampling_rate=44100]")
 synth = LearnableHarmonicSynth(sr, 10)
 
 loss = SpectrogramLoss(sr)
