@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import math
 
 class LearnablePhaseDistortion(nn.Module):
     def __init__(self, order=1, sample_rate=44100):
@@ -51,6 +52,42 @@ class TimeDependentAllPassFilter(nn.Module):
         for i in range(self.order):
             # Example modulation - sinusoidal variation 
             #modulation = 0.5 * torch.sin(2 * math.pi * t_normalized * self.frequency)  
+            modulation = t_normalized
+            # Apply modulated coefficients
+            a_mod = self.a[i] * (1 + modulation)
+            b_mod = self.b[i] * (1 + modulation)
+
+            y = (b_mod * x) + (a_mod * y) - (b_mod * y.roll(-1, dims=-1))
+            x = x.roll(-1, dims=-1) 
+
+        return y 
+    
+
+class PeriodicAllPassFilter(nn.Module):
+    def __init__(self, order=1, sample_rate=44100):
+        super().__init__()
+        self.sample_rate = sample_rate
+
+        # Initialize learnable coefficients
+        self.a = nn.Parameter(torch.rand(order))  
+        self.b = nn.Parameter(torch.rand(order))
+        # Initialize a freq param for each order
+        self.frequency = nn.Parameter(torch.rand(order))
+        self.order = order
+
+    def forward(self, x, t = None):
+        # Normalize time for stable learning
+        if t is None:
+            t = torch.arange(x.size(0))
+        t_normalized = t /  t.max()
+
+
+        y = x.clone()  
+
+        # Time-dependent all-pass filter
+        for i in range(self.order):
+            # Example modulation - sinusoidal variation 
+            modulation = 0.5 * torch.sin(2 * math.pi * t_normalized * self.frequency[i])  
             modulation = t_normalized
             # Apply modulated coefficients
             a_mod = self.a[i] * (1 + modulation)

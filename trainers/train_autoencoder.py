@@ -45,7 +45,7 @@ class EqFeatureAutoencoderTrainer():
         self.criterion = nn.MSELoss()
         self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=0.0001)
         self.num_bands = num_bands
-    def train(self, waveform, num_steps=2000, batch_size_samples=32768):
+    def train(self, waveform, num_steps=5000, batch_size_samples=32768):
         features = extract_eq_features(waveform, self.num_bands)
         loss_ema = None
         for i in range(num_steps):
@@ -58,7 +58,7 @@ class EqFeatureAutoencoderTrainer():
             noise = torch.randn_like(batch)
             batch = batch
             batch = batch / batch.abs().max()
-            output = self.model(batch)#+noise)
+            output = self.model(batch+noise)
             loss = self.criterion(output, batch)
             loss.backward()
             loss_ema = loss if loss_ema is None else 0.99 * loss_ema + 0.01 * loss

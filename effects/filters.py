@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torchaudio
 
 class LearnableToneKnob(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, max_cutoff_freq):
@@ -21,3 +22,24 @@ class LearnableToneKnob(nn.Module):
         kernel = self.design_lowpass_kernel(cutoff_freq, self.conv.kernel_size[0])
         self.conv.weight = nn.Parameter(kernel.unsqueeze(0).unsqueeze(0)) 
         return self.conv(x)
+
+
+class LearnableLowpass(nn.Module):
+    def __init__(self, sample_rate, initial_freq=1500):
+        super().__init__()
+        self.sample_rate = sample_rate
+
+        # Filter components
+    
+        self.filter_freq = nn.Parameter(torch.tensor([initial_freq]))
+        self.filter_q = nn.Parameter(torch.tensor([0.707]))
+
+    def forward(self, x):
+        out = torchaudio.functional.lowpass_biquad(
+            x,
+            self.sample_rate,    # Sample rate
+            self.filter_freq,  # Center frequency
+            self.filter_q,           # Quality factor
+        )
+
+        return out
