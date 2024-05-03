@@ -26,6 +26,6 @@ input_audio = torch.zeros(length)
 input_audio.requires_grad = False
 
 optimizer = SingleSourceOptimizer(input_audio, sr, synthAsEffect, loss_wrapper)
-output = optimizer.optimize(1000, 0.01)
+output = optimizer.optimize(500, 0.01)
 output = output.unsqueeze(0)
 torchaudio.save("output.wav", output.detach(), sr)

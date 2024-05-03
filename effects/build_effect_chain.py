@@ -5,15 +5,19 @@ from effects import *
 import re
 
 def parse_effect_string(effect_string):
-    pattern = r'([A-Za-z]+)(?:\[(.*)\])?'  # Pattern to capture effect name and optional parameters
+    pattern = r'([A-Za-z]+)(?:\[(.*?)\])?'
     return re.findall(pattern, effect_string)
 
 def process_parameters(param_str):
     params = {}
     if param_str:
         for param in param_str.split(','):
-            key, value = param.split('=')
             print("Parsing param", param)
+
+            key, value = param.split('=')
+            # Strip potential ] from param
+            value = value.strip(']')
+            
             try:
                 params[key] = int(value)  # Try converting to int
             except ValueError:
@@ -36,6 +40,7 @@ def build_effect_chain(effect_string):
     modules = []
     for name, param_str in effect_components:
         if name in effect_classes:
+            print("Building effect", name)
             kwargs = process_parameters(param_str)
             modules.append(effect_classes[name](**kwargs)) 
         else:
