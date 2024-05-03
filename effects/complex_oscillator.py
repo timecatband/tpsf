@@ -2,7 +2,9 @@ from synth.complex_oscillator import LearnableSineOscillator
 from effects.dynamics import LearnableASR
 import torch.nn as nn
 import torch
+from effects.decorator import effect
 
+@effect("ComplexOscillator")
 class ComplexOscillatorAsEffect(nn.Module):
     def __init__(self, starting_freq, sr):
         super(ComplexOscillatorAsEffect, self).__init__()

@@ -1,5 +1,4 @@
 import mido
-from mido.messages.messages import Message
 import math
 
 def calculate_freq_rad_from_midi_note(note_number, sr):
@@ -11,17 +10,21 @@ def calculate_freq_rad_from_midi_note(note_number, sr):
 def process_midi(midi_file_path, sr):
     midi_file = mido.MidiFile(midi_file_path)
     ticks_per_beat = midi_file.ticks_per_beat
+    microseconds_per_beat = 500000  # Default tempo is 120 BPM (500,000 us per beat)
 
     note_events = []
     current_notes = {}  # To track note_on and their times
+    time_accumulator = 0  # This will accumulate time in seconds
 
-    time_accumulator = 0
     for track in midi_file.tracks:
         for msg in track:
-            time_accumulator += msg.time
-
-            if not isinstance(msg, Message):  
-                continue  
+            # Handle tempo change
+            if msg.type == 'set_tempo':
+                microseconds_per_beat = msg.tempo
+            
+            # Convert time in ticks to seconds
+            seconds_per_tick = (microseconds_per_beat / 1000000.0) / ticks_per_beat
+            time_accumulator += msg.time * seconds_per_tick
 
             if msg.type == 'note_on':
                 current_notes[msg.note] = time_accumulator 
@@ -30,17 +33,17 @@ def process_midi(midi_file_path, sr):
                     start_time = current_notes.pop(msg.note)
                     duration = time_accumulator - start_time
 
-                    # Conversion to samples (you'll need your sample rate 'sr')
-                    start_sample = int(start_time * sr / ticks_per_beat)
-                    end_sample = start_sample + int(duration * sr / ticks_per_beat)  
+                    # Conversion to samples
+                    start_sample = int(start_time * sr)
+                    end_sample = start_sample + int(duration * sr)  
 
                     freq_rad = calculate_freq_rad_from_midi_note(msg.note, sr) 
-                    note_events.append((freq_rad, start_sample, end_sample))  # Updated tuple
+                    note_events.append((freq_rad, start_sample, end_sample))
 
     return note_events
 
-import sys
 if __name__ == "__main__":
+    import sys
     if len(sys.argv) != 3:
         print("Usage: python parser.py <path_to_midi_file> <sample_rate>")
         sys.exit(1)

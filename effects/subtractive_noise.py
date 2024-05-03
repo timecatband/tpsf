@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from effects.decorator import effect
 
-effect_name = "SubtractiveSynth"
+@effect("SubtractiveSynth")
 class SubtractiveSynthAsEffect(nn.Module):
     def __init__(self, sr):
         super().__init__()

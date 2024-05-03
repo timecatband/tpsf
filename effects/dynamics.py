@@ -14,7 +14,8 @@ class LearnableASR(torch.nn.Module):
         # Initialize biases to 0
         self.asr[0].bias.data.fill_(0)
     def forward(self, x):
-        time_grid = torch.arange(x.size(0)).unsqueeze(1).float()
+        # TODO: Should preallocate the time grid
+        time_grid = torch.arange(x.size(0)).unsqueeze(1).float().to(x.device)
         time_grid = time_grid / time_grid.max()
         # Reverse time grid
         time_grid = 1 - time_grid

@@ -39,11 +39,17 @@ class LearnableHarmonicSynth(nn.Module):
         self.gain = nn.Parameter(torch.tensor(1.0))
         self.phase = nn.Parameter(torch.tensor(0.0))
         self.harmonic_amplitudes = nn.Parameter(torch.ones(num_harmonics))
+    #    if torch.backends.mps.is_available():
+     #       self.device = torch.device("mps")
+        if torch.cuda is not None and torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        else:
+            self.device = torch.device("cpu")
         # Rescale harmonic amplitudes to decay
        # self.harmonic_amplitudes = harmonic_amplitudes / torch.arange(1, num_harmonics+1).float()
         
     def forward(self, freq, output_length_samples):
-        time = torch.linspace(0, output_length_samples / self.sr, output_length_samples)
+        time = torch.linspace(0, output_length_samples / self.sr, output_length_samples).to(self.device)
         x = freq * time * self.sr
         waveform = torch.sin(x+self.phase)
         for i in range(1, len(self.harmonic_amplitudes)):
