@@ -7,7 +7,7 @@ from synth.oscillator import LearnableSineOscillator
 import math
 import torch.nn as nn
 from effects.distortion import SoftClipping, HardClipping, Gain
-from effects.reverb import LearnableIRReverb, LearnableIRReverbSinusoidal, LearnableNoiseReverb
+from effects.reverb import LearnableIRReverb, LearnableIRReverbSinusoidal, LearnableNoiseReverb, LearnableParametricIRReverb
 from goals.spectral_losses import SpectrogramLoss
 from effects.waveform_phase import PeriodicAllPassFilter
 from effects.equalizers import NotchFilter
@@ -33,7 +33,7 @@ def render_audio(note_events, oscillators, sr, duration_samples, effect_chain):
     for freq_rad, start_sample, end_sample in note_events:
         if start_sample >= duration_samples:  
             continue
-
+        print("Start and end samples duration samples", start_sample, end_sample, duration_samples)
         # Get the oscillator (already initialized)
         oscillator = oscillators[freq_rad]
         
@@ -66,27 +66,29 @@ parameters_to_optimize = []
 for oscillator in oscillators.values():
     parameters_to_optimize.extend(oscillator.parameters())
 
-lowpass = LearnableLowpass(sample_rate, 20000.0)
+lowpass = LearnableLowpass(sample_rate, 14000.0)
+lowpass.filter_q.requires_grad = False
 
 lowpass.filter_freq.requires_grad = False
 
 effect_chain = nn.Sequential(
+   # LearnableIRReverb(2048),
 
-    SubtractiveSynthAsEffect(sample_rate),
     LearnableASR(),
+    SubtractiveSynthAsEffect(sample_rate),
+
     #LearnableNoiseReverb(128),
    # NotchFilter(sample_rate),
     PeriodicAllPassFilter(3, sample_rate),
     SoftClipping(),
-
-    #LearnableIRReverb(1024),
-    #LearnableLowpass(sample_rate),
+    LearnableParametricIRReverb(sample_rate, sample_rate),
+    #LearnableLowpass(sample_rate, sample_rate/2.0),
     Gain(),
 )
 parameters_to_optimize.extend(effect_chain.parameters())
 
 
-optimizer = torch.optim.AdamW(parameters_to_optimize, lr=9e-3) 
+optimizer = torch.optim.AdamW(parameters_to_optimize, lr=3e-2) 
 num_steps = 10000
 spec_loss = SpectrogramLoss(sample_rate)
 for i in range(num_steps):
@@ -94,7 +96,7 @@ for i in range(num_steps):
     audio = render_audio(midi_events, oscillators, sample_rate, duration_samples, effect_chain)
     #audio = audio / audio.abs().max()
     # Compute msel oss between audio and target
-    audio = lowpass(audio)
+    #audio = lowpass(audio)
     #loss = torch.mean((audio - target_audio)**2)
     
     loss =  spec_loss(audio, target_audio)
@@ -112,7 +114,6 @@ for i in range(num_steps):
 audio = render_audio(midi_events, oscillators, sample_rate, duration_samples, effect_chain)
 # Save audio using torchaudio
 #audio = audio/torch.max(torch.abs(audio))
-audio = lowpass(audio)
 audio = audio.unsqueeze(0)
 
 torchaudio.save("output.wav", audio.detach(), sample_rate)

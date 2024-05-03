@@ -9,6 +9,11 @@ ir = sys.argv[1]
 audio_file = sys.argv[2]
 ir, sr = torchaudio.load(ir)
 audio_file, sr = torchaudio.load(audio_file)
+# Clip to seconds 20 to 30
+audio_file = audio_file[:, 20*sr:30*sr]
+# Discard one channel
+audio_file = audio_file[0].unsqueeze(0)
+
 
 reverb = IRReverb(ir)
 # Ensure reverb parameters are frozen (no training)
@@ -24,7 +29,7 @@ optim = torch.optim.AdamW(eq.parameters(), lr=0.01)
 loss_fn = ReverbBoostingLoss(reverb, audio_file)
 
 
-for i in range(40):
+for i in range(100):
     optim.zero_grad()
     eqed_audio = eq(audio_file)
     # Rescale eqed audio to have same peak as original

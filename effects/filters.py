@@ -32,10 +32,31 @@ class LearnableLowpass(nn.Module):
         # Filter components
     
         self.filter_freq = nn.Parameter(torch.tensor([initial_freq]))
-        self.filter_q = nn.Parameter(torch.tensor([0.707]))
+        self.filter_q = nn.Parameter(torch.tensor([0.9]))
 
     def forward(self, x):
         out = torchaudio.functional.lowpass_biquad(
+            x,
+            self.sample_rate,    # Sample rate
+            self.filter_freq,  # Center frequency
+            self.filter_q,           # Quality factor
+        )
+
+        return out
+    
+
+class LearnableHighpass(nn.Module):
+    def __init__(self, sample_rate, initial_freq=1500):
+        super().__init__()
+        self.sample_rate = sample_rate
+
+        # Filter components
+    
+        self.filter_freq = nn.Parameter(torch.tensor([initial_freq]))
+        self.filter_q = nn.Parameter(torch.tensor([0.9]))
+
+    def forward(self, x):
+        out = torchaudio.functional.highpass_biquad(
             x,
             self.sample_rate,    # Sample rate
             self.filter_freq,  # Center frequency

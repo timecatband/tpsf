@@ -3,6 +3,45 @@ import torch
 import torch.nn as nn
 from effects.dynamics import LearnableASR
 
+def fft_convolve(signal, kernel):
+    signal = nn.functional.pad(signal, (0, signal.shape[-1]))
+    kernel = nn.functional.pad(kernel, (kernel.shape[-1], 0))
+
+    output = torch.fft.irfft(torch.fft.rfft(signal) * torch.fft.rfft(kernel))
+    output = output[..., output.shape[-1] // 2:]
+
+    return output
+
+class LearnableParametricIRReverb(nn.Module):
+    def __init__(self, length, sampling_rate, initial_wet=0, initial_decay=5):
+        super().__init__()
+        self.length = length
+        self.sampling_rate = sampling_rate
+
+        self.noise = nn.Parameter((torch.rand(length) * 2 - 1).unsqueeze(-1))
+        self.decay = nn.Parameter(torch.tensor(float(initial_decay)))
+        self.wet = nn.Parameter(torch.tensor(float(initial_wet)))
+
+        t = torch.arange(self.length) / self.sampling_rate
+        t = t.reshape(1, -1, 1)
+        self.register_buffer("t", t)
+
+    def build_impulse(self):
+        t = torch.exp(-nn.functional.softplus(-self.decay) * self.t * 500)
+        noise = self.noise * t
+        impulse = noise * torch.sigmoid(self.wet)
+        impulse[:, 0] = 1
+        return impulse
+
+    def forward(self, x):
+        x = x.unsqueeze(0)
+        lenx = x.shape[1]
+        impulse = self.build_impulse()
+        impulse = nn.functional.pad(impulse, (0, 0, 0, lenx - self.length))
+
+        x = fft_convolve(x.squeeze(-1), impulse.squeeze(-1)).unsqueeze(-1)
+        return x.squeeze(0).squeeze(-1)
+
 class IRReverb(nn.Module):
     def __init__(self, ir):
         super().__init__()
@@ -49,11 +88,12 @@ class LearnableNoiseReverb(nn.Module):
         super().__init__()
         self.reverb = LearnableIRReverb(ir_length)
         self.envelope = LearnableASR()
+        self.blend = nn.Parameter(torch.tensor(0.01))
     def forward(self, x):
         noise = torch.randn_like(x)
         reverb = self.reverb(noise)
         reverb = self.envelope(reverb)
-        return reverb*0.01+x
+        return reverb*self.blend + x*(1-self.blend)
 
 class ParametricEarlyReflections(nn.Module):
     def __init__(self, num_reflections, base_delay, decay_factor, filter_cutoff=None):
