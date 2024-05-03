@@ -11,7 +11,7 @@ class SingleSourceOptimizer:
         self.objective = objective
         self.audio_file.requires_grad = False
     
-    def optimize(self, num_steps=1000, learning_rate=0.01):
+    def optimize(self, num_steps=1000, learning_rate=0.01, decay_lr = True):
         optimizer = torch.optim.AdamW(self.effect_pipeline.parameters(), lr=learning_rate)
         for i in range(num_steps):
             processed_waveform = self.effect_pipeline(self.audio_file)#, self.sample_rate)
@@ -20,6 +20,10 @@ class SingleSourceOptimizer:
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+            # Decay learning rate
+            if decay_lr:
+                for param_group in optimizer.param_groups:
+                    param_group['lr'] *= 0.999
             if i % 100 == 0:
                 torchaudio.save("output_intermediate.wav", processed_waveform.detach().cpu().unsqueeze(0), self.sample_rate)
 
