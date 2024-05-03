@@ -12,6 +12,8 @@ import sys
 dev = "cpu"
 #f torch.backends.mps.is_available():
  #   dev = "mps"
+if torch.cuda.is_available():
+    dev = "cuda"
 print("Using device", dev)
 dev = torch.device(dev)
 
