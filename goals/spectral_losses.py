@@ -8,6 +8,11 @@ class SpectrogramLoss(nn.Module):
         #self.loss = nn.MSELoss()
         self.loss = nn.L1Loss()
         self.spec = torchaudio.transforms.MelSpectrogram(sample_rate=sr, normalized=False)
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        else:
+            self.device = torch.device("cpu")
+        self.spec.to(self.device)
     def forward(self, x, y):
         x = self.spec(x)
         y = self.spec(y)
