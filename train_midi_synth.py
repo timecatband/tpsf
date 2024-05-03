@@ -4,7 +4,7 @@ import torchaudio
 from midi.parser import process_midi
 from midi.learnable_midi_synth import LearnableMidiSynthAsEffect
 from synth.oscillator import LearnableHarmonicSynth
-from goals.spectral_losses import SpectrogramLoss
+from goals.spectral_losses import SpectrogramLoss, MultiScaleSpectrogramLoss
 from trainers.single_source_optimizer import SingleSourceOptimizer
 from effects.build_effect_chain import build_effect_chain
 import sys
@@ -22,10 +22,11 @@ target_audio = sys.argv[2]
 target_audio, sr = torchaudio.load(target_audio)
 print("sr", sr)
 midi_events = process_midi(midi_file, sr)
-effect_chain = build_effect_chain("SubtractiveSynth[sr=44100],ComplexOscillator[starting_freq=3.0,sr=44100],Envelope[stages=3],ParametricIRReverb[length=44100,sampling_rate=44100],PeriodicAllPassFilter[order=2],SoftClipping,Lowpass[sample_rate=44100]")
+effect_chain = build_effect_chain("SubtractiveSynth[sr=44100],ComplexOscillator[starting_freq=3.0,sr=44100],Envelope[stages=4],ParametricIRReverb[length=44100,sampling_rate=44100],PeriodicAllPassFilter[order=3],SoftClipping,Lowpass[sample_rate=44100]")
 synth = LearnableHarmonicSynth(sr, 10)
 target_audio = target_audio.to(dev)
-loss = SpectrogramLoss(sr)
+#loss = SpectrogramLoss(sr)
+loss = MultiScaleSpectrogramLoss(sr)
 loss_wrapper = lambda x: loss(x, target_audio)
 
 synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events)

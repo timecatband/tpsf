@@ -12,7 +12,8 @@ class LearnableMidiSynth(nn.Module):
             self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
-        self.window_length = 512
+        # TODO Questionable
+        self.window_length = 256
         self.window = torch.hann_window(self.window_length).to(self.device)
     def forward(self, note_events, duration_samples):
         output = torch.zeros(duration_samples).to(self.device)
