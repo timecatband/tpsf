@@ -26,7 +26,7 @@ class LearnableToneKnob(nn.Module):
 
 @effect("Lowpass")
 class LearnableLowpass(nn.Module):
-    def __init__(self, sample_rate, initial_freq=1500):
+    def __init__(self, sample_rate, initial_freq=15000.0):
         super().__init__()
         self.sample_rate = sample_rate
 

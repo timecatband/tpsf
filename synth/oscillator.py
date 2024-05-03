@@ -59,6 +59,8 @@ class LearnableHarmonicSynth(nn.Module):
             if freq_hz * (i+1) > self.sr / 2:
                 scale = 1e-4
             waveform += scale * torch.sin((i+1) * x+self.phase) * self.harmonic_amplitudes[i]
+        # TODO...maybe this is bad
+        waveform = waveform / waveform.abs().max()
         return waveform
     
 class NullSynth(nn.Module):

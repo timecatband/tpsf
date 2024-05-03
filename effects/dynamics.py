@@ -16,7 +16,8 @@ class LearnableASR(torch.nn.Module):
     def forward(self, x):
         # TODO: Should preallocate the time grid
         time_grid = torch.arange(x.size(0)).unsqueeze(1).float().to(x.device)
-        time_grid = time_grid / time_grid.max()
+        # TODO: Highly questionable
+        time_grid = time_grid / 44100
         # Reverse time grid
         time_grid = 1 - time_grid
     

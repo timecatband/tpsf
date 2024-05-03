@@ -22,7 +22,7 @@ target_audio = sys.argv[2]
 target_audio, sr = torchaudio.load(target_audio)
 print("sr", sr)
 midi_events = process_midi(midi_file, sr)
-effect_chain = build_effect_chain("SubtractiveSynth[sr=44100],ComplexOscillator[starting_freq=3.0,sr=44100],Envelope[stages=3],ParametricIRReverb[length=44100,sampling_rate=44100],SoftClipping")
+effect_chain = build_effect_chain("ComplexOscillator[starting_freq=3.0,sr=44100],SubtractiveSynth[sr=44100],Envelope[stages=3],ParametricIRReverb[length=44100,sampling_rate=44100],SoftClipping,Lowpass[sample_rate=44100]")
 synth = LearnableHarmonicSynth(sr, 10)
 target_audio = target_audio.to(dev)
 loss = SpectrogramLoss(sr)
@@ -37,6 +37,6 @@ input_audio.requires_grad = False
 input_audio = input_audio.to(dev)
 
 optimizer = SingleSourceOptimizer(input_audio, sr, synthAsEffect, loss_wrapper)
-output = optimizer.optimize(1000, 0.01)
+output = optimizer.optimize(10000, 0.01)
 output = output.unsqueeze(0)
 torchaudio.save("output.wav", output.detach().cpu(), sr)
