@@ -12,6 +12,8 @@ class LearnableMidiSynth(nn.Module):
             self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
+        self.window_length = 512
+        self.window = torch.hann_window(self.window_length).to(self.device)
     def forward(self, note_events, duration_samples):
         output = torch.zeros(duration_samples).to(self.device)
         for freq_rad, start_sample, end_sample in note_events:
@@ -19,7 +21,11 @@ class LearnableMidiSynth(nn.Module):
                 print("Skipping note" + str(start_sample) + " " + str(end_sample) + " " + str(duration_samples))
                 continue
             output_length = min(end_sample, duration_samples) - start_sample
+            extended_length = output_length + self.window_length
+            extended_length = min(extended_length, duration_samples - start_sample)
             segment = self.synth(freq_rad, output_length)
+            # Apply the tapering window
+            segment[-self.window_length:] *= self.window
             if self.effect_chain is not None:
                 segment = self.effect_chain(segment)
             output[start_sample:start_sample + output_length] += segment

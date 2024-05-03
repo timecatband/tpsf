@@ -4,11 +4,11 @@ from effects.decorator import effect
 
 @effect("SoftClipping")
 class SoftClipping(nn.Module):
-    def __init__(self, gain=1.0):
+    def __init__(self, gain=1.0, blend=0.99):
         super().__init__()
         self.gain = nn.Parameter(torch.tensor([gain]))
         self.color = nn.Parameter(torch.tensor([0.0]))
-        self.blend = nn.Parameter(torch.tensor([0.9]))
+        self.blend = nn.Parameter(torch.tensor([blend]))
     def forward(self, x):
         out = torch.tanh(self.gain * x + self.color)
         return (1-self.blend)*out + self.blend*x
