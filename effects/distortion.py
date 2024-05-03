@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
+from effects.decorator import effect
 
+@effect("SoftClipping")
 class SoftClipping(nn.Module):
     def __init__(self, gain=1.0):
         super().__init__()
@@ -10,6 +12,8 @@ class SoftClipping(nn.Module):
     def forward(self, x):
         out = torch.tanh(self.gain * x + self.color)
         return (1-self.blend)*out + self.blend*x
+    
+@effect("HardClipping")
 class HardClipping(nn.Module):
     def __init__(self, threshold=0.5):
         super().__init__()
@@ -18,6 +22,7 @@ class HardClipping(nn.Module):
     def forward(self, x):
         return torch.clamp(x, min=-self.threshold, max=self.threshold)
     
+@effect("Gain")
 class Gain(nn.Module):
     def __init__(self, gain=1.0):
         super().__init__()
@@ -26,6 +31,7 @@ class Gain(nn.Module):
     def forward(self, x):
         return self.gain * x
 
+@effect("ToneKnob")
 class ToneKnob(nn.Module):
     # Implement a lowpass with pytorch
     def __init__(self, cutoff=0.5):

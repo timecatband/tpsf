@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torchaudio
+from effects.decorator import effect
 
 class LearnableToneKnob(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, max_cutoff_freq):
@@ -23,7 +24,7 @@ class LearnableToneKnob(nn.Module):
         self.conv.weight = nn.Parameter(kernel.unsqueeze(0).unsqueeze(0)) 
         return self.conv(x)
 
-
+@effect("Lowpass")
 class LearnableLowpass(nn.Module):
     def __init__(self, sample_rate, initial_freq=1500):
         super().__init__()
@@ -44,7 +45,7 @@ class LearnableLowpass(nn.Module):
 
         return out
     
-
+@effect("Highpass")
 class LearnableHighpass(nn.Module):
     def __init__(self, sample_rate, initial_freq=1500):
         super().__init__()

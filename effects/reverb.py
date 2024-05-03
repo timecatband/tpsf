@@ -2,6 +2,7 @@ import torchaudio
 import torch
 import torch.nn as nn
 from effects.dynamics import LearnableASR
+from effects.decorator import effect
 
 def fft_convolve(signal, kernel):
     signal = nn.functional.pad(signal, (0, signal.shape[-1]))
@@ -12,6 +13,7 @@ def fft_convolve(signal, kernel):
 
     return output
 
+@effect("ParametricIRReverb")
 class LearnableParametricIRReverb(nn.Module):
     def __init__(self, length, sampling_rate, initial_wet=0, initial_decay=5):
         super().__init__()
@@ -73,6 +75,7 @@ class LearnableIRReverbSinusoidal(nn.Module):
         out = torchaudio.functional.fftconvolve(x, ir, mode='full')
         return out[:x.shape[0]] * self.blend + x *(1 - self.blend) 
 
+@effect("LearnableIRReverb")
 class LearnableIRReverb(nn.Module):
     def __init__(self, ir_length):
         super().__init__()

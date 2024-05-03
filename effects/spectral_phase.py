@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import numpy as np
+from effects.decorator import effect
+
 class PhaseDistortionField(nn.Module):
   def __init__(self):
     super(PhaseDistortionField, self).__init__()
@@ -95,6 +97,7 @@ def spectrogram_phase_modify_audio(audio_tensor, audio_sample_rate, phase_transf
 
     return reconstructed_audio
 
+@effect("PhaseDistortionField")
 class PhaseDistortionFieldEffect(nn.Module):
     def __init__(self):
         super(PhaseDistortionFieldEffect, self).__init__()
@@ -102,7 +105,8 @@ class PhaseDistortionFieldEffect(nn.Module):
 
     def forward(self, x, sr):
         return spectrogram_phase_modify_audio(x, sr, self.phase_distortion_field)
-    
+
+@effect("PhaseConvolver")
 class PhaseConvolverEffect(nn.Module):
     def __init__(self):
         super(PhaseConvolverEffect, self).__init__()

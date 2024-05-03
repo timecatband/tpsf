@@ -1,7 +1,9 @@
 import torch
 import torch.nn as nn
 import math
+from effects.decorator import effect
 
+@effect("PhaseDistortion")
 class LearnablePhaseDistortion(nn.Module):
     def __init__(self, order=1, sample_rate=44100):
         super().__init__()
@@ -23,6 +25,7 @@ class LearnablePhaseDistortion(nn.Module):
 
         return torch.tanh(self.gain*y) 
 
+@effect("TimeDependentAllPassFilter")
 class TimeDependentAllPassFilter(nn.Module):
     def __init__(self, order=1, sample_rate=44100):
         super().__init__()
@@ -63,6 +66,7 @@ class TimeDependentAllPassFilter(nn.Module):
         return y 
     
 
+@effect("PeriodicAllPassFilter")
 class PeriodicAllPassFilter(nn.Module):
     def __init__(self, order=1, sample_rate=44100):
         super().__init__()

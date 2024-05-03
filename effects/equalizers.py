@@ -1,6 +1,9 @@
 import torchaudio
 import torch
 import torch.nn as nn
+from effects.decorator import effect
+
+@effect("BiquadEq")
 class BiquadEq(nn.Module):
     def __init__(self, sample_rate):
         super().__init__()
@@ -17,7 +20,8 @@ class BiquadEq(nn.Module):
         print("center_freq: ", self.center_freq)
         print("q: ", self.q)
         print("gain: ", self.gain)
-        
+   
+@effect("NotchFilter")     
 class NotchFilter(nn.Module):
     def __init__(self, sample_rate):
         super().__init__()
