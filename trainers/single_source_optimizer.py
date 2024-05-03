@@ -20,6 +20,8 @@ class SingleSourceOptimizer:
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+            if i % 100 == 0:
+                torchaudio.save("output_intermediate.wav", processed_waveform.detach().cpu(), self.sample_rate)
 
         return processed_waveform
     
