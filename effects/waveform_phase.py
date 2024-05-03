@@ -78,12 +78,17 @@ class PeriodicAllPassFilter(nn.Module):
         # Initialize a freq param for each order
         self.frequency = nn.Parameter(torch.rand(order))
         self.order = order
+        if torch.cuda.is_available():
+            self.dev = torch.device("cuda")
+        else:
+            self.dev = torch.device("cpu")
 
     def forward(self, x, t = None):
         # Normalize time for stable learning
         if t is None:
-            t = torch.arange(x.size(0))
+            t = torch.arange(x.size(0)).to(self.dev)
         t_normalized = t /  t.max()
+        
 
 
         y = x.clone()  
