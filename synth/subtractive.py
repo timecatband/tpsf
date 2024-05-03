@@ -17,11 +17,15 @@ class SubtractiveNoiseSynth(nn.Module):
         # Amplitude envelope
         self.envelope = LearnableASR()
         self.distortion = SoftClipping()
+        if torch.cuda.is_available():
+            self.dev = torch.device("cuda")
+        else:
+            self.dev = torch.device("cpu")
 
     def forward(self, duration_samples):
         # Generate noise
         if self.noise_type == 'white':
-            noise = torch.rand(int(duration_samples))
+            noise = torch.rand(int(duration_samples)).to(self.dev)
         # Add other noise types (pink, brown) if desired
 
         # Apply filter
