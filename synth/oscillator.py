@@ -33,7 +33,7 @@ class LearnableSineOscillator(nn.Module):
         print("freq_hz: ", freq_hz)
         
 class LearnableHarmonicSynth(nn.Module):
-    def __init__(self, sr, num_harmonics):
+    def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True):
         super(LearnableHarmonicSynth, self).__init__()
         self.sr = sr
         self.gain = nn.Parameter(torch.tensor(1.0))
@@ -45,6 +45,12 @@ class LearnableHarmonicSynth(nn.Module):
             self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
+            
+        self.amplitude_scaler = nn.Sequential(
+            nn.Linear(1, 32),
+            nn.ReLU(),
+            nn.Linear(32, num_harmonics)
+        )
         # Rescale harmonic amplitudes to decay
        # self.harmonic_amplitudes = harmonic_amplitudes / torch.arange(1, num_harmonics+1).float()
         
@@ -58,6 +64,9 @@ class LearnableHarmonicSynth(nn.Module):
             scale = 1.0
             if freq_hz * (i+1) > self.sr / 2:
                 scale = 1e-4
+            hamps = self.harmonic_amplitudes
+            if self.amplitude_scaler is not None:
+                hamps = hamps*self.amplitude_scaler(torch.tensor([freq]).unsqueeze(0).to(self.device))
             waveform += scale * torch.sin((i+1) * x+self.phase) * self.harmonic_amplitudes[i]
         # TODO...maybe this is bad
         waveform = waveform / waveform.abs().max()

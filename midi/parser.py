@@ -15,6 +15,7 @@ def process_midi(midi_file_path, sr):
     note_events = []
     current_notes = {}  # To track note_on and their times
     time_accumulator = 0  # This will accumulate time in seconds
+    on_velocities = {}  # To track note_on velocities
 
     for track in midi_file.tracks:
         for msg in track:
@@ -28,6 +29,7 @@ def process_midi(midi_file_path, sr):
 
             if msg.type == 'note_on':
                 current_notes[msg.note] = time_accumulator 
+                on_velocities[msg.note] = msg.velocity
             elif msg.type == 'note_off':
                 if msg.note in current_notes:
                     start_time = current_notes.pop(msg.note)
@@ -38,7 +40,9 @@ def process_midi(midi_file_path, sr):
                     end_sample = start_sample + int(duration * sr)  
 
                     freq_rad = calculate_freq_rad_from_midi_note(msg.note, sr) 
-                    note_events.append((freq_rad, start_sample, end_sample))
+                    velocity = on_velocities[msg.note]
+                    on_velocities.pop(msg.note)
+                    note_events.append((freq_rad, velocity, start_sample, end_sample))
 
     return note_events
 
