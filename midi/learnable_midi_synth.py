@@ -8,8 +8,12 @@ class LearnableMidiSynth(nn.Module):
         self.synth = synth
         self.effect_chain = effect_chain
         self.sr = sr
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        else:
+            self.device = torch.device("cpu")
     def forward(self, note_events, duration_samples):
-        output = torch.zeros(duration_samples)
+        output = torch.zeros(duration_samples).to(self.device)
         for freq_rad, start_sample, end_sample in note_events:
             if start_sample >= duration_samples:
                 print("Skipping note" + str(start_sample) + " " + str(end_sample) + " " + str(duration_samples))
