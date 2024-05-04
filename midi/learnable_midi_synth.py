@@ -4,7 +4,7 @@ import torch.nn as nn
 from effects.reverb import LearnableParametricIRReverb
 
 class LearnableMidiSynth(nn.Module):
-    def __init__(self, sr, synth, effect_chain):
+    def __init__(self, sr, synth, effect_chain, enable_time_latent = True, time_latent_size = 2):
         super().__init__()
         self.synth = synth
         self.effect_chain = effect_chain
@@ -16,6 +16,13 @@ class LearnableMidiSynth(nn.Module):
         # TODO Questionable
         self.window_length = 1024
         self.window = torch.hann_window(self.window_length).to(self.device)
+        self.enable_time_latent = enable_time_latent
+        self.time_latent_size = time_latent_size
+        self.time_embedder = nn.Sequential(
+            nn.Linear(1, 32),
+            nn.ReLU(),
+            nn.Linear(32, time_latent_size)
+        )
     def forward(self, note_events, duration_samples):
         output = torch.zeros(duration_samples).to(self.device)
         for freq_rad, velocity, start_sample, end_sample in note_events:
@@ -25,7 +32,11 @@ class LearnableMidiSynth(nn.Module):
             output_length = min(end_sample, duration_samples) - start_sample
             extended_length = output_length + self.window_length
             extended_length = min(extended_length, duration_samples - start_sample)
-            segment = self.synth(freq_rad, output_length)
+            normalized_t_start = start_sample / duration_samples
+            time_latent = None
+            if self.enable_time_latent:
+                time_latent = self.time_embedder(torch.tensor([normalized_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
+            segment = self.synth(freq_rad, output_length, time_latent)
             
             # TODO: Move this in to synth
             # Normalize midi velocity

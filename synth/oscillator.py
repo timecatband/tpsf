@@ -33,7 +33,7 @@ class LearnableSineOscillator(nn.Module):
         print("freq_hz: ", freq_hz)
         
 class LearnableHarmonicSynth(nn.Module):
-    def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True):
+    def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True, time_latent_size=2):
         super(LearnableHarmonicSynth, self).__init__()
         self.sr = sr
         self.gain = nn.Parameter(torch.tensor(1.0))
@@ -51,10 +51,16 @@ class LearnableHarmonicSynth(nn.Module):
             nn.ReLU(),
             nn.Linear(32, num_harmonics)
         )
+        self.map_time_latent = nn.Sequential(
+            nn.Linear(time_latent_size, 32),
+            nn.ReLU(),
+            nn.Linear(32, num_harmonics)
+        )
+            
         # Rescale harmonic amplitudes to decay
        # self.harmonic_amplitudes = harmonic_amplitudes / torch.arange(1, num_harmonics+1).float()
         
-    def forward(self, freq, output_length_samples):
+    def forward(self, freq, output_length_samples, time_latent=None):
         time = torch.linspace(0, output_length_samples / self.sr, output_length_samples).to(self.device)
         x = freq * time * self.sr
         waveform = torch.sin(x+self.phase)
@@ -67,6 +73,8 @@ class LearnableHarmonicSynth(nn.Module):
             hamps = self.harmonic_amplitudes
             if self.amplitude_scaler is not None:
                 hamps = hamps*self.amplitude_scaler(torch.tensor([freq]).unsqueeze(0).to(self.device))
+            if time_latent is not None:
+                hamps = hamps*self.map_time_latent(time_latent.unsqueeze(0).to(self.device)).squeeze(0)
             waveform += scale * torch.sin((i+1) * x+self.phase) * self.harmonic_amplitudes[i]
         # TODO...maybe this is bad
         waveform = waveform / waveform.abs().max()
