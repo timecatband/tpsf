@@ -47,7 +47,7 @@ class LearnableLowpass(nn.Module):
     
 @effect("Highpass")
 class LearnableHighpass(nn.Module):
-    def __init__(self, sample_rate, initial_freq=1500):
+    def __init__(self, sample_rate, initial_freq=1500.0):
         super().__init__()
         self.sample_rate = sample_rate
 

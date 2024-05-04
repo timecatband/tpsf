@@ -1,6 +1,7 @@
 import torch
 import torchaudio
 import torch.nn as nn
+from effects.reverb import LearnableParametricIRReverb
 
 class LearnableMidiSynth(nn.Module):
     def __init__(self, sr, synth, effect_chain):
@@ -13,7 +14,7 @@ class LearnableMidiSynth(nn.Module):
         else:
             self.device = torch.device("cpu")
         # TODO Questionable
-        self.window_length = 256
+        self.window_length = 1024
         self.window = torch.hann_window(self.window_length).to(self.device)
     def forward(self, note_events, duration_samples):
         output = torch.zeros(duration_samples).to(self.device)
@@ -38,11 +39,17 @@ class LearnableMidiSynth(nn.Module):
         return output
 
 class LearnableMidiSynthAsEffect(nn.Module):
-    def __init__(self, sr, synth, effect_chain, note_events):
+    def __init__(self, sr, synth, effect_chain, note_events, enable_room_reverb = True):
         super().__init__()
         self.lms = LearnableMidiSynth(sr, synth, effect_chain)
         self.note_events = note_events
+        self.enable_room_reverb = enable_room_reverb
+        if self.enable_room_reverb:
+            self.verb = LearnableParametricIRReverb(sr, sr)
     def forward(self, x):
         length_samples = x.shape[0]
         
-        return self.lms(self.note_events, length_samples)+x
+        out = self.lms(self.note_events, length_samples)+x
+        if (self.enable_room_reverb):
+            out = self.verb(out)
+        return out
