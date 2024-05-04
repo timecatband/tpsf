@@ -36,11 +36,11 @@ class LearnableMidiSynth(nn.Module):
             time_latent = None
             if self.enable_time_latent:
                 time_latent = self.time_embedder(torch.tensor([normalized_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
-            segment = self.synth(freq_rad, output_length, time_latent)
+            segment = self.synth(freq_rad, output_length, time_latent, velocity/127.0)
             
             # TODO: Move this in to synth
             # Normalize midi velocity
-            segment *= velocity / 127.0
+            #segment *= velocity / 127.0
             
             # Apply the tapering window
             segment[-self.window_length:] *= self.window
