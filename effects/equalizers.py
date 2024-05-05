@@ -13,7 +13,7 @@ class BiquadEq(nn.Module):
         self.gain = nn.Parameter(torch.tensor([1.0]))
         #self.q = torch.tensor([1.0])
         #self.gain = torch.tensor([5.0])
-    def forward(self, x, t):
+    def forward(self, x):
         gain = torch.clamp(self.gain, 0.1, 10)
         return torchaudio.functional.equalizer_biquad(x, self.sample_rate, self.center_freq, self.q, gain)
     def print(self):
@@ -33,7 +33,7 @@ class NotchFilter(nn.Module):
         )
         
         self.sample_rate = sample_rate
-    def forward(self, x, t):
+    def forward(self, x):
         x = x.unsqueeze(0)
         output = self.more_filters(x)
         # Clip output shape to match input

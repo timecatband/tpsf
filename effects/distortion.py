@@ -9,7 +9,7 @@ class SoftClipping(nn.Module):
         self.gain = nn.Parameter(torch.tensor([gain]))
         self.color = nn.Parameter(torch.tensor([0.0]))
         self.blend = nn.Parameter(torch.tensor([blend]))
-    def forward(self, x, t):
+    def forward(self, x):
         out = torch.tanh(self.gain * x + self.color)
         return (1-self.blend)*out + self.blend*x
     

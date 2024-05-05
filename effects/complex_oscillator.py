@@ -12,6 +12,6 @@ class ComplexOscillatorAsEffect(nn.Module):
         self.sr = sr
         self.envelope = LearnableASR()
         self.gain = nn.Parameter(torch.tensor(1.0))
-    def forward(self, x, t):
+    def forward(self, x):
         gain = torch.clamp(self.gain, 0.01, 5)
-        return self.envelope(self.osc(x, t), t)*gain+x
+        return self.envelope(self.osc(x.shape[0]))*gain+x

@@ -35,7 +35,7 @@ class LearnableParametricIRReverb(nn.Module):
         impulse[:, 0] = 1
         return impulse
 
-    def forward(self, x, t):
+    def forward(self, x):
         x = x.unsqueeze(0)
         lenx = x.shape[1]
         impulse = self.build_impulse()

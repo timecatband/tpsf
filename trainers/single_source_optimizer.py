@@ -14,7 +14,7 @@ class SingleSourceOptimizer:
     def optimize(self, num_steps=1000, learning_rate=0.01, decay_lr = True):
         optimizer = torch.optim.AdamW(self.effect_pipeline.parameters(), lr=learning_rate)
         for i in range(num_steps):
-            processed_waveform = self.effect_pipeline(self.audio_file.clone())#, self.sample_rate)
+            processed_waveform = self.effect_pipeline(self.audio_file)#, self.sample_rate)
             loss = self.objective(processed_waveform)
             print("Step", i, "Loss", loss.item())
             loss.backward()
