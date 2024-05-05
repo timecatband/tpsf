@@ -84,11 +84,10 @@ class PeriodicAllPassFilter(nn.Module):
             self.dev = torch.device("cpu")
 
     def forward(self, x, t = None):
-        # Normalize time for stable learning
-        if t is None:
-            t = torch.arange(x.size(0)).to(self.dev)
+        #if t is None:
+        # TODO AU:  We should probably do something with T here
+        t = torch.arange(x.size(0)).to(self.dev)
         t_normalized = t /  t.max()
-        
 
 
         y = x.clone()  

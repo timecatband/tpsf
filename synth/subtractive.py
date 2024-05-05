@@ -22,7 +22,8 @@ class SubtractiveNoiseSynth(nn.Module):
         else:
             self.dev = torch.device("cpu")
 
-    def forward(self, duration_samples):
+    def forward(self, x, t):
+        duration_samples = x.size(0)
         # Generate noise
         if self.noise_type == 'white':
             noise = torch.rand(int(duration_samples)).to(self.dev)
@@ -30,11 +31,11 @@ class SubtractiveNoiseSynth(nn.Module):
 
         # Apply filter
         # Turning both passes on triggers divergence
-        filtered_noise = self.filter2(noise)
+        filtered_noise = self.filter2(noise, t)
         filtered_noise = filtered_noise / torch.max(torch.abs(filtered_noise))
-        output = self.envelope(filtered_noise)
+        output = self.envelope(filtered_noise, t)
         
-        output = self.distortion(output)
+        output = self.distortion(output, t)
         
 
         return output

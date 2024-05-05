@@ -9,7 +9,9 @@ class SubtractiveSynthAsEffect(nn.Module):
         super().__init__()
         self.synth = SubtractiveNoiseSynth(sr)
         self.blend = nn.Parameter(torch.tensor([0.9]))
-    def forward(self, x):
+    def forward(self, x, t):
+        # TODO: t might be needed...
         x_length_samples = x.size(0)
-        synth_out = self.synth(x_length_samples)
+        synth_out = self.synth(x, t)
+        
         return (1-self.blend)*synth_out + self.blend*x

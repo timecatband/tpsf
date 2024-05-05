@@ -33,6 +33,15 @@ def get_effect_classes(module):
             print(f"Found effect: {obj.__effect_name__}")
     return effect_classes
 
+class EffectSequence(nn.Module):
+    def __init__(self, modules):
+        super().__init__()
+        self.chain = modules
+    def forward(self, x, t):
+        for effect in self.chain:
+            x = effect(x, t)
+        return x
+
 def build_effect_chain(effect_string):
     effect_components = parse_effect_string(effect_string)
     effect_classes = get_effect_classes(effects)
@@ -46,4 +55,4 @@ def build_effect_chain(effect_string):
         else:
             raise ValueError(f"Unknown effect: {name}")
 
-    return nn.Sequential(*modules)
+    return EffectSequence(modules)
