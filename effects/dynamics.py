@@ -13,12 +13,11 @@ class LearnableASR(torch.nn.Module):
         )
         # Initialize biases to 0
         self.asr[0].bias.data.fill_(0)
-    def forward(self, x):
-        # TODO: Should preallocate the time grid
-        time_grid = torch.arange(x.size(0)).unsqueeze(1).float().to(x.device)
-        # TODO: Highly questionable
-        time_grid = time_grid / 44100
+    def forward(self, x, t):
+        # TODO: Hardcoded sample rate
+        time_grid = torch.linspace(t, t+x.size(0)/44100, x.size(0)).unsqueeze(1).float().to(x.device)
         # Reverse time grid
+        
         time_grid = 1 - time_grid
     
         envelope = self.asr(time_grid)

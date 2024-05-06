@@ -23,8 +23,8 @@ class LearnableMidiSynth(nn.Module):
             nn.ReLU(),
             nn.Linear(32, time_latent_size)
         )
-    def forward(self, note_events, duration_samples):
-        output = torch.zeros(duration_samples).to(self.device)
+    def forward(self, note_events, output, t):
+        duration_samples = output.shape[0]
         for freq_rad, velocity, start_sample, end_sample in note_events:
             if start_sample >= duration_samples:
                 print("Skipping note" + str(start_sample) + " " + str(end_sample) + " " + str(duration_samples))
@@ -32,20 +32,20 @@ class LearnableMidiSynth(nn.Module):
             output_length = min(end_sample, duration_samples) - start_sample
             extended_length = output_length + self.window_length
             extended_length = min(extended_length, duration_samples - start_sample)
-            normalized_t_start = start_sample / duration_samples
+            normalized_global_t_start = start_sample / duration_samples
             time_latent = None
             if self.enable_time_latent:
-                time_latent = self.time_embedder(torch.tensor([normalized_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
-            segment = self.synth(freq_rad, output_length, time_latent, velocity/127.0)
+                time_latent = self.time_embedder(torch.tensor([normalized_global_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
+            segment = self.synth(freq_rad, output_length, time_latent, velocity/127.0, t)
             
             # TODO: Move this in to synth
             # Normalize midi velocity
-            #segment *= velocity / 127.0
+            segment *= velocity / 127.0
             
             # Apply the tapering window
             segment[-self.window_length:] *= self.window
             if self.effect_chain is not None:
-                segment = self.effect_chain(segment)
+                segment = self.effect_chain(segment, t)
             output[start_sample:start_sample + output_length] += segment
         return output
 
@@ -60,7 +60,8 @@ class LearnableMidiSynthAsEffect(nn.Module):
     def forward(self, x):
         length_samples = x.shape[0]
         
-        out = self.lms(self.note_events, length_samples)+x
+        x = self.lms(self.note_events, x, 0.0)
         if (self.enable_room_reverb):
-            out = self.verb(out)
-        return out
+            # Questionable 0.0
+            x = self.verb(x, 0.0)
+        return x
