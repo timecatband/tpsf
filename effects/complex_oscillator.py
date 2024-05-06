@@ -11,7 +11,7 @@ class ComplexOscillatorAsEffect(nn.Module):
         self.osc = LearnableSineOscillator(starting_freq, sr)
         self.sr = sr
         self.envelope = LearnableASR()
-        self.gain = nn.Parameter(torch.tensor(1.0))
+        self.gain = nn.Parameter(torch.tensor(5.0))
     def forward(self, x, t):
-        gain = torch.clamp(self.gain, 0.01, 5)
-        return self.envelope(self.osc(x, t), t)*gain+x
+        gain = torch.clamp(self.gain, 0.01, 5.0)
+        return self.envelope(self.osc(x, t.item()), t)*gain+x

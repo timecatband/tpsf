@@ -1,0 +1,11 @@
+{
+    "midi_file": "jerryguitar.mid",
+    "wav_file": "jerryguitar.wav",
+    "loudness": "loudness.npy",
+    "pitch": "pitch.npy",
+    "effect_chain": [
+        "Envelope[stages=4],",
+        "SoftClipping,",
+        "Lowpass[sample_rate=44100],"
+    ]
+}

@@ -1,0 +1,2 @@
+platform :osx, '10.6' # Example macOS version, adjust as needed
+pod 'LibTorch'

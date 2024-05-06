@@ -24,7 +24,7 @@ class SingleSourceOptimizer:
             if decay_lr:
                 for param_group in optimizer.param_groups:
                     param_group['lr'] *= 0.999
-            if i % 100 == 0:
+            if i % 20 == 0:
                 torchaudio.save("output_intermediate.wav", processed_waveform.detach().cpu().unsqueeze(0), self.sample_rate)
 
         return processed_waveform

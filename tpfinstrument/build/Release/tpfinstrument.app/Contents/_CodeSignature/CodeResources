@@ -11,14 +11,41 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Frameworks/libc10.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			OYo0s0KsIRDTHoqpRxJbMysbjbQ=
+			</data>
+			<key>requirement</key>
+			<string>identifier libc10 and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		</dict>
+		<key>Frameworks/libtorch.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			T/+AFX/IhJN4jhcvtJmTWHghDSI=
+			</data>
+			<key>requirement</key>
+			<string>identifier libtorch and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		</dict>
+		<key>Frameworks/libtorch_cpu.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			szetiEYC/8Z3OaG27JTFsFqbJUg=
+			</data>
+			<key>requirement</key>
+			<string>identifier "libtorch_cpu" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		</dict>
 		<key>PlugIns/tpfinstrumentExtension.appex</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			BCS+QODUOkFPnim0PxMxwaRJnI0=
+			khDOH0k/YSst9ch5fZIs4PaY/tA=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"0424be40e0d43a414f9e29b43f1331c1a4499c8d" or cdhash H"a9fec001a32525e48d43ca7fbd8aa566a3cd2222"</string>
+			<string>identifier "timecatlabs.tpfinstrument.tpfinstrumentExtension" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
 		</dict>
 		<key>Resources/Synth.aif</key>
 		<dict>

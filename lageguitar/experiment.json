@@ -1,0 +1,11 @@
+{
+    "midi_file": "lageguitar.mid",
+    "wav_file": "lageguitar.wav",
+    "loudness": "loudness.npy",
+    "pitch": "pitch.npy",
+    "effect_chain": [
+        "Gain",
+        "Envelope[stages=4],",
+        "SoftClipping"
+    ]
+}

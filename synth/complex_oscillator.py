@@ -3,9 +3,9 @@ import torch.nn as nn
 import math
 
 def complex_oscillator(
-    z: torch.ComplexType,
-    initial_phase: torch.ComplexType = None,
-    t=0.0,
+    z,
+    initial_phase,
+    t: torch.Tensor,
     N: int = 2048,
     constrain: bool = False,
     reduce: bool = False,
@@ -24,8 +24,7 @@ def complex_oscillator(
         z = z * torch.tanh(mag) / mag
         
     # We calculate the oscillation in batches
-
-    z = z[..., None].expand(*z.shape, N - 1)
+    z = z[..., None].expand(N - 1)
     z = torch.cat([initial_phase.unsqueeze(-1), z], dim=-1)
     
     y = z.cumprod(dim=-1).real
@@ -43,20 +42,20 @@ class LearnableSineOscillator(nn.Module):
         self.freq = nn.Parameter(torch.tensor(starting_freq_rad))
         self.predicted_z = nn.Parameter(torch.exp(1j * starting_freq_rad))
         self.initial_phase = nn.Parameter(torch.ones_like(self.predicted_z))
-        self.prepared_output = None
-    def forward(self, x, t):
+        self.prepared_output = torch.zeros(self.sr)
+    def forward(self, x, t: float):
         # Training
         if t == 0:
-            return complex_oscillator(self.predicted_z, self.initial_phase, t, N=x.shape[0], constrain=True)
+            return complex_oscillator(self.predicted_z, self.initial_phase, torch.tensor([0.0]), N=x.shape[0], constrain=True)
         else:
             # TODO: How to cause this path to get traced
             if self.prepared_output is None:
-                self.prepared_output = complex_oscillator(self.predicted_z, self.initial_phase, 0, N=self.sr, constrain=True)
+                self.prepared_output = complex_oscillator(self.predicted_z, self.initial_phase, torch.tensor([t]), N=self.sr, constrain=True)
             else:
                 t = t * self.sr
-                t = t.long()
-                t = t.clamp(0, self.sr-x.shape[0])
-                return x + self.prepared_output[t:t+x.shape[0]]
+                tt = torch.tensor([t]).long()
+                tt = tt.clamp(0, self.sr-x.shape[0]).item()
+                return self.prepared_output[tt:tt+x.shape[0]]
     def print(self):
         print(f"Predicted frequency: {self.predicted_z.angle().abs().item():.3f}")
         frequency_hz = (self.predicted_z.angle().abs().item() / (2 * math.pi)) * self.sr

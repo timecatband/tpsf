@@ -3,6 +3,7 @@ import torchaudio
 import torch.nn as nn
 from effects.reverb import LearnableParametricIRReverb
 from synth.oscillator import HarmonicScaler
+from synth.oscillator import KarplusSynth
 class LearnableMidiSynth(nn.Module):
     def __init__(self, sr, synth, effect_chain, enable_time_latent = True, time_latent_size = 2):
         super().__init__()
@@ -14,8 +15,9 @@ class LearnableMidiSynth(nn.Module):
         else:
             self.device = torch.device("cpu")
         # TODO Questionable
-        self.window_length = 1024
+        self.window_length = 512
         self.window = torch.hann_window(self.window_length).to(self.device)
+        self.window = torch.linspace(1, 0, self.window_length).to(self.device)
         self.enable_time_latent = enable_time_latent
         self.time_latent_size = time_latent_size
         self.time_embedder = nn.Sequential(
@@ -24,43 +26,71 @@ class LearnableMidiSynth(nn.Module):
             nn.Linear(32, time_latent_size)
         )
         self.harmonic_scaler = HarmonicScaler(8, time_latent_size)
+        self.karplus_synth = KarplusSynth(sr)
+      #  self.karplus_synth = torch.jit.script(self.karplus_synth)
+        self.blend = nn.Parameter(torch.tensor([0.5]))
         
-    def forward(self, note_events, output, t):
-        duration_samples = output.shape[0]
+    def forward(self, note_events, output, t, pitch=None):
+        duration_samples = output.shape[0] #+ self.window_length
+        t = torch.tensor([t]).to(self.device)
         for freq_rad, velocity, start_sample, end_sample in note_events:
             if start_sample >= duration_samples:
                 print("Skipping note" + str(start_sample) + " " + str(end_sample) + " " + str(duration_samples))
                 continue
             output_length = min(end_sample, duration_samples) - start_sample
-            extended_length = output_length + self.window_length
+            extended_length = output_length #+ self.window_length
             extended_length = min(extended_length, duration_samples - start_sample)
+            if start_sample + extended_length >= duration_samples:
+                extended_length = duration_samples - start_sample
             normalized_global_t_start = start_sample / duration_samples
             time_latent = None
             if self.enable_time_latent:
                 time_latent = self.time_embedder(torch.tensor([normalized_global_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
             velocity = velocity / 127.0
-            hamps, velocity = self.harmonic_scaler(freq_rad, time_latent, velocity)
-            segment = self.synth(freq_rad, output_length, hamps, velocity, t)
+            hamps = self.harmonic_scaler(torch.tensor([freq_rad]), time_latent, torch.tensor([velocity]))
             
+            if pitch is not None:
+                pitches_in_segment = pitch[start_sample:start_sample + extended_length]
+            segment1 = self.synth(freq_rad, output_length, hamps, t, pitches=pitches_in_segment)
+            segment2 = self.karplus_synth(segment1, freq_rad, output_length, hamps, t, pitches=pitches_in_segment) 
+           # segment1 = segment1
+            #segment1 = segment1 / segment1.abs().max()
+            #segment2 = segment2 / segment2.abs().max()
             # Apply the tapering window
-            segment[-self.window_length:] *= self.window
+            #print("Blend", self.blend)
+         #   blend = self.blend.clamp(0.3, 0.7)
+            #print("Segment 1 and 2 abs sum", torch.abs(segment1).sum(), torch.abs(segment2).sum())
+            segment = segment2
+            # TODO Restore mixing segment 1
+            #segment = segment2
+            
             if self.effect_chain is not None:
                 segment = self.effect_chain(segment, t)
+            segment[-self.window_length:] *= self.window                
+            # Clip to output length
+            segment = segment[:output_length]
+            if start_sample + output_length >= duration_samples:
+                output_length = duration_samples - start_sample
+           # print("Segment shape", segment.shape)
+           # print("Start sample + output length", output_length)
             output[start_sample:start_sample + output_length] += segment
         return output
 
 class LearnableMidiSynthAsEffect(nn.Module):
-    def __init__(self, sr, synth, effect_chain, note_events, enable_room_reverb = True):
+    def __init__(self, sr, synth, effect_chain, note_events, pitch = None, enable_room_reverb = True):
         super().__init__()
         self.lms = LearnableMidiSynth(sr, synth, effect_chain)
         self.note_events = note_events
-        self.enable_room_reverb = enable_room_reverb
+        # TODO Turn back on!!!
+        self.enable_room_reverb = True #enable_room_reverb
         if self.enable_room_reverb:
             self.verb = LearnableParametricIRReverb(sr, sr)
+        self.pitch = pitch
     def forward(self, x):
         length_samples = x.shape[0]
         
-        x = self.lms(self.note_events, x, 0.0)
+        x = self.lms(self.note_events, x, 0.0, self.pitch)
+        # TODO REENABLE!
         if (self.enable_room_reverb):
             # Questionable 0.0
             x = self.verb(x, 0.0)

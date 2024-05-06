@@ -1,10 +1,10 @@
 version: "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)"
-options: "7f8d958765a9f5cb94d6cf2ba03e4cf4f5bf1ef6d6317f048c48d7dff379a617"
-build_start_time: [1715013047, 758563000]
-build_end_time: [1715013048, 775473000]
+options: "f9b1a654d590005f47fb7c2d019c23990aa7fd62705c48b201369ba40b24566d"
+build_start_time: [1715019981, 436805000]
+build_end_time: [1715019984, 409945000]
 inputs:
   ? "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/DerivedSources/GeneratedAssetSymbols.swift"
-  : [1715013047, 750779863]
+  : [1715019981, 429379079]
   "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/Audio/SimplePlayEngine.swift": [1714971125, 164400623]
   "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/MIDI/MIDIManager.swift": [1714971125, 165622588]
   "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/String/StringHelpers.swift": [1714971125, 167691925]

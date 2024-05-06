@@ -25,8 +25,7 @@ class SubtractiveNoiseSynth(nn.Module):
     def forward(self, x, t):
         duration_samples = x.size(0)
         # Generate noise
-        if self.noise_type == 'white':
-            noise = torch.rand(int(duration_samples)).to(self.dev)
+        noise = torch.rand(int(duration_samples)).to(self.dev)
         # Add other noise types (pink, brown) if desired
 
         # Apply filter

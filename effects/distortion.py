@@ -1,6 +1,20 @@
 import torch
 import torch.nn as nn
 from effects.decorator import effect
+from effects.filters import LearnableHighpass
+
+@effect("Exciter")
+class Exciter(nn.Module):
+    def __init__(self, sample_rate):
+        super().__init__()
+        self.distortion = SoftClipping()
+        self.sr = sample_rate
+        self.highpass = LearnableHighpass(self.sr, initial_freq=7000.0)
+        self.blend = nn.Parameter(torch.tensor([0.9]))
+    def forward(self, x, t):
+        wet_signal = self.distortion(x, t)
+        wet_signal = self.highpass(wet_signal, t)
+        return (1-self.blend)*wet_signal + self.blend*x
 
 @effect("SoftClipping")
 class SoftClipping(nn.Module):
@@ -28,7 +42,7 @@ class Gain(nn.Module):
         super().__init__()
         self.gain = nn.Parameter(torch.tensor([gain]))
 
-    def forward(self, x):
+    def forward(self, x, t: torch.Tensor):
         return self.gain * x
 
 @effect("ToneKnob")

@@ -27,9 +27,8 @@ class NotchFilter(nn.Module):
         super().__init__()
         self.filter = nn.Conv1d(2, 2, 5, padding=2, bias=False)
         self.more_filters = nn.Sequential(  
-            nn.Conv1d(1, 16, 3, padding=1, bias=False),
-           nn.Conv1d(16, 16, 7, padding=3, bias=False),
-            nn.Conv1d(16, 1, 3, padding=2, bias=False),
+            nn.Conv1d(1, 3, 3, padding=1, bias=False),
+            nn.Conv1d(3, 1, 7, padding=3, bias=False),
         )
         
         self.sample_rate = sample_rate

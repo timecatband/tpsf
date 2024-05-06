@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A89AEB32BE94E44006DA98B /* libtorch_cpu.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A89AEAD2BE94A4C006DA98B /* libtorch_cpu.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A89AEB42BE94E44006DA98B /* libc10.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A89AEAB2BE94A3C006DA98B /* libc10.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A89AEB52BE94E44006DA98B /* libtorch.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A89AEA92BE94A30006DA98B /* libtorch.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A89AEB72BE9547B006DA98B /* libtorch_cpu.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A89AEAD2BE94A4C006DA98B /* libtorch_cpu.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A89AEB82BE9547B006DA98B /* libc10.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A89AEAB2BE94A3C006DA98B /* libc10.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A89AEB92BE9547B006DA98B /* libtorch.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A89AEA92BE94A30006DA98B /* libtorch.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2AA654D12BE89975003BD7A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654D02BE89975003BD7A1 /* ContentView.swift */; };
 		2AA654D52BE89975003BD7A1 /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654D42BE89975003BD7A1 /* ViewControllerRepresentable.swift */; };
 		2AA654D82BE89975003BD7A1 /* Synth.aif in Resources */ = {isa = PBXBuildFile; fileRef = 2AA654D72BE89975003BD7A1 /* Synth.aif */; };
@@ -63,6 +69,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2A89AEB22BE94E27006DA98B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2A89AEB32BE94E44006DA98B /* libtorch_cpu.dylib in CopyFiles */,
+				2A89AEB42BE94E44006DA98B /* libc10.dylib in CopyFiles */,
+				2A89AEB52BE94E44006DA98B /* libtorch.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2A89AEB62BE95470006DA98B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2A89AEB72BE9547B006DA98B /* libtorch_cpu.dylib in CopyFiles */,
+				2A89AEB82BE9547B006DA98B /* libc10.dylib in CopyFiles */,
+				2A89AEB92BE9547B006DA98B /* libtorch.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2AA6553E2BE89976003BD7A1 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -77,6 +107,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2A89AEA92BE94A30006DA98B /* libtorch.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtorch.dylib; path = libtorch/lib/libtorch.dylib; sourceTree = "<group>"; };
+		2A89AEAB2BE94A3C006DA98B /* libc10.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libc10.dylib; path = libtorch/lib/libc10.dylib; sourceTree = "<group>"; };
+		2A89AEAD2BE94A4C006DA98B /* libtorch_cpu.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtorch_cpu.dylib; path = libtorch/lib/libtorch_cpu.dylib; sourceTree = "<group>"; };
 		2AA654CD2BE89975003BD7A1 /* tpfinstrument.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tpfinstrument.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA654D02BE89975003BD7A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2AA654D42BE89975003BD7A1 /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
@@ -157,6 +190,7 @@
 				2AA655012BE89976003BD7A1 /* tpfinstrumentUITests */,
 				2AA6550E2BE89976003BD7A1 /* tpfinstrumentExtension */,
 				2AA654CE2BE89975003BD7A1 /* Products */,
+				2AA655482BE94079003BD7A1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -369,6 +403,16 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		2AA655482BE94079003BD7A1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A89AEAD2BE94A4C006DA98B /* libtorch_cpu.dylib */,
+				2A89AEAB2BE94A3C006DA98B /* libc10.dylib */,
+				2A89AEA92BE94A30006DA98B /* libtorch.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -380,6 +424,7 @@
 				2AA654CA2BE89975003BD7A1 /* Frameworks */,
 				2AA654CB2BE89975003BD7A1 /* Resources */,
 				2AA6553E2BE89976003BD7A1 /* Embed Foundation Extensions */,
+				2A89AEB22BE94E27006DA98B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -434,6 +479,7 @@
 				2AA655062BE89976003BD7A1 /* Sources */,
 				2AA655072BE89976003BD7A1 /* Frameworks */,
 				2AA655082BE89976003BD7A1 /* Resources */,
+				2A89AEB62BE95470006DA98B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -644,8 +690,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = F448H442WD;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -663,6 +712,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = libtorch/include;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -707,8 +757,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = F448H442WD;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -720,6 +773,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = libtorch/include;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -746,6 +800,10 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrument.tpfinstrumentExtension;
@@ -774,6 +832,10 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrument.tpfinstrumentExtension;
@@ -806,6 +868,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
@@ -842,6 +908,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (

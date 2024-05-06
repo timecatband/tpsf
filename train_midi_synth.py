@@ -28,18 +28,20 @@ if len(sys.argv) > 3:
 midi_events = process_midi(midi_file, sr)
 #effect_chain = build_effect_chain("SubtractiveSynth[sr=44100], Envelope[stages=4], ComplexOscillator[starting_freq=3.0,sr=44100],ComplexOscillator[starting_freq=1.5,sr=44100],ParametricIRReverb[length=44100,sampling_rate=44100],PeriodicAllPassFilter[order=3],SoftClipping,Lowpass[sample_rate=44100],NotchFilter[sample_rate=44100]")
 #,PeriodicAllPassFilter[order=3],SoftClipping,Lowpass[sample_rate=44100],NotchFilter[sample_rate=44100]")
-effect_string = "SubtractiveSynth[sr=44100],"
-effect_string += "Envelope[stages=4],"
-effect_string += "SubtractiveSynth[sr=44100],"
-effect_string += "Envelope[stages=4],"
+#effect_string = "Gain,"
+effect_string = "Envelope[stages=4],"
+#effect_string += "SubtractiveSynth[sr=44100],"
+
+#effect_string += "SubtractiveSynth[sr=44100],"
+#effect_string += "Envelope[stages=4],"
 
 effect_string += "ComplexOscillator[starting_freq=3.0,sr=44100],"
 effect_string += "ComplexOscillator[starting_freq=1.5,sr=44100],"
-effect_string += "ParametricIRReverb[length=44100,sampling_rate=44100],"
-effect_string += "PeriodicAllPassFilter[order=3],"
+#effect_string += "ParametricIRReverb[length=44100,sampling_rate=44100],"
+#effect_string += "PeriodicAllPassFilter[order=3],"
 effect_string += "SoftClipping,"
-effect_string += "Lowpass[sample_rate=44100],"
-effect_string += "NotchFilter[sample_rate=44100]"
+#effect_string += "Lowpass[sample_rate=44100],"
+#effect_string += "NotchFilter[sample_rate=44100]"
 
 effect_chain = build_effect_chain(effect_string)
 synth = LearnableHarmonicSynth(sr, 10)
@@ -59,7 +61,7 @@ input_audio.requires_grad = False
 input_audio = input_audio.to(dev)
 
 optimizer = SingleSourceOptimizer(input_audio, sr, synthAsEffect, loss_wrapper)
-output = optimizer.optimize(10000, 0.01)
+output = optimizer.optimize(2000, 0.001)
 output = output.unsqueeze(0)
 torchaudio.save("output.wav", output.detach().cpu(), sr)
 torch.save(synthAsEffect.state_dict(), "synth_as_effect.pth")

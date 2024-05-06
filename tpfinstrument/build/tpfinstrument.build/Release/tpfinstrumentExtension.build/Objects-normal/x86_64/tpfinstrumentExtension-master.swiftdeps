@@ -1,7 +1,7 @@
 version: "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)"
-options: "e70063ce784f40859fd5c7b6d37ad7f2dda5084ea3942adac217b2f96d258cd4"
-build_start_time: [1715013046, 933333000]
-build_end_time: [1715013048, 774059000]
+options: "966ca28322a6e5799db663341c5e22927f0316b734bb90203d24ff3c62c6aebf"
+build_start_time: [1715019980, 355828000]
+build_end_time: [1715019982, 948736000]
 inputs:
   "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/Parameters/ParameterSpecBase.swift": [1714971126, 417382821]
   "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/UI/AudioUnitViewController.swift": [1714971126, 445033846]

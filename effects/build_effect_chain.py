@@ -34,8 +34,10 @@ def get_effect_classes(module):
     return effect_classes
     
 class EffectSequence(nn.Sequential):
+    def __init__(self, *args):
+        super().__init__(*args)
     def forward(self, x, t):
-        for module in self._modules.values():
+        for module in self.children():
             x = module(x, t)
         return x
 

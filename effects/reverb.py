@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 from effects.dynamics import LearnableASR
 from effects.decorator import effect
+from effects.filters import LearnableLowpass
 
 def fft_convolve(signal, kernel):
     signal = nn.functional.pad(signal, (0, signal.shape[-1]))
@@ -26,7 +27,21 @@ class LearnableParametricIRReverb(nn.Module):
 
         t = torch.arange(self.length) / self.sampling_rate
         t = t.reshape(1, -1, 1)
+        self.filter = LearnableLowpass(sampling_rate)
         self.register_buffer("t", t)
+        self.fr_params = nn.Parameter(torch.randn(length))
+        self.exponential_fade_over_time = torch.linspace(1, 0.0001, length)
+        self.exponential_fade_over_time = torch.exp(self.exponential_fade_over_time)
+        self.exponential_fade_over_time = self.exponential_fade_over_time / self.exponential_fade_over_time.max()
+        self.smooth_fade_over_1000 = torch.linspace(1, 0.0001, 1000)
+        self.one_at_length = torch.ones(length-1000).float()
+        self.envelope = nn.Parameter(torch.cat((self.one_at_length, self.smooth_fade_over_1000)))
+    def save_impulse(self, path):
+        impulse = self.build_impulse().detach().squeeze(0).cpu()
+        print("Impulse shape", impulse.shape)
+        impulse = impulse.permute(1, 0)
+        impulse = impulse / impulse.abs().max()
+        torchaudio.save(path, impulse, self.sampling_rate)
 
     def build_impulse(self):
         t = torch.exp(-nn.functional.softplus(-self.decay) * self.t * 500)
@@ -34,13 +49,39 @@ class LearnableParametricIRReverb(nn.Module):
         impulse = noise * torch.sigmoid(self.wet)
         impulse[:, 0] = 1
         return impulse
+    def apply_frequency_response(self, impulse):
+        # FFT to convert the impulse to the frequency domain
+        impulse_fft = torch.fft.fft(impulse, dim=-1)  # Ensure FFT is along the correct dimension
+        print("Impulse fft shape", impulse_fft.shape)
+        # Create frequency response based on self.fr_params
+        # Make sure that the frequency response is shaped correctly:
+        frequency_response = torch.exp(-nn.functional.softplus(self.fr_params))
+        # Adjust dimensions to match [batch_size, signal_length, 1]
+        frequency_response = frequency_response.unsqueeze(0).unsqueeze(-1)  # Adding necessary dimensions
+
+        # Apply the frequency response
+        modified_impulse_fft = impulse_fft * frequency_response  # Should now correctly apply without unintended broadcasting
+
+        # Inverse FFT to convert back to the time domain
+        modified_impulse = torch.fft.ifft(modified_impulse_fft, dim=1).real  # Ensure iFFT is along the correct dimension
+
+        print("Impulse and modified shapes")
+        print(impulse.shape, modified_impulse.shape)
+        return modified_impulse*self.exponential_fade_over_time.unsqueeze(-1).unsqueeze(0)
+
 
     def forward(self, x, t):
         x = x.unsqueeze(0)
         lenx = x.shape[1]
         impulse = self.build_impulse()
+        #impulse = self.apply_frequency_response(impulse)
+        print('impulse shape', impulse.shape)
+        #impulse = self.filter(impulse.squeeze(-1), t)
+        # TODO Put back maybe?
+        impulse = impulse * self.envelope.unsqueeze(-1)
         impulse = nn.functional.pad(impulse, (0, 0, 0, lenx - self.length))
-
+        
+        
         x = fft_convolve(x.squeeze(-1), impulse.squeeze(-1)).unsqueeze(-1)
         return x.squeeze(0).squeeze(-1)
 

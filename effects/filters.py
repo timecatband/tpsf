@@ -24,6 +24,7 @@ class LearnableToneKnob(nn.Module):
         self.conv.weight = nn.Parameter(kernel.unsqueeze(0).unsqueeze(0)) 
         return self.conv(x)
 
+#TODO: Make sure we didn't break grads with .item()
 @effect("Lowpass")
 class LearnableLowpass(nn.Module):
     def __init__(self, sample_rate, initial_freq=15000.0):
@@ -35,33 +36,39 @@ class LearnableLowpass(nn.Module):
         self.filter_freq = nn.Parameter(torch.tensor([initial_freq]))
         self.filter_q = nn.Parameter(torch.tensor([0.9]))
 
-    def forward(self, x, t):
+    def forward(self, x: torch.Tensor, t: torch.Tensor):
+        filter_freq = self.filter_freq.clamp(100, self.sample_rate / 2 - 1)
+        q = self.filter_q.clamp(0.1, 10)
         out = torchaudio.functional.lowpass_biquad(
             x,
             self.sample_rate,    # Sample rate
-            self.filter_freq,  # Center frequency
-            self.filter_q,           # Quality factor
+            filter_freq,
+            q
         )
 
         return out
+    def print(self):
+        print("filter_freq: ", self.filter_freq)
+        print("filter_q: ", self.filter_q)
     
 @effect("Highpass")
 class LearnableHighpass(nn.Module):
-    def __init__(self, sample_rate, initial_freq=1500.0):
+    def __init__(self, sample_rate, initial_freq=100.0):
         super().__init__()
         self.sample_rate = sample_rate
 
         # Filter components
     
         self.filter_freq = nn.Parameter(torch.tensor([initial_freq]))
-        self.filter_q = nn.Parameter(torch.tensor([0.9]))
+        self.filter_q = nn.Parameter(torch.tensor([0.1]))
 
-    def forward(self, x, t):
+    def forward(self, x: torch.Tensor, t: torch.Tensor):
+        filter_freq = self.filter_freq.clamp(100, self.sample_rate / 2 - 1)
+        filter_q = self.filter_q.clamp(0.1, 10)
         out = torchaudio.functional.highpass_biquad(
             x,
             self.sample_rate,    # Sample rate
-            self.filter_freq,  # Center frequency
-            self.filter_q,           # Quality factor
+            filter_freq, filter_q
         )
 
         return out

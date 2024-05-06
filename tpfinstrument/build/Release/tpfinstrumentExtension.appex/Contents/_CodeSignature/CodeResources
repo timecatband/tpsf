@@ -23,6 +23,33 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Frameworks/libc10.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			1ut78maCOmlSPpV6XtpbY6KqyYM=
+			</data>
+			<key>requirement</key>
+			<string>identifier libc10 and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		</dict>
+		<key>Frameworks/libtorch.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			3yzP/JumBqN+tBA89OjLLRX+yfY=
+			</data>
+			<key>requirement</key>
+			<string>identifier libtorch and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		</dict>
+		<key>Frameworks/libtorch_cpu.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			j/31+u/WRp9wjiYNGjtxFy9v2t0=
+			</data>
+			<key>requirement</key>
+			<string>identifier "libtorch_cpu" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: racarrg@gmail.com (548C2D9Y5R)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		</dict>
 		<key>Resources/Base.lproj/AudioUnitViewController.nib</key>
 		<dict>
 			<key>hash2</key>
