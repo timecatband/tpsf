@@ -71,17 +71,18 @@ class LearnableHarmonicSynth(nn.Module):
        # self.harmonic_amplitudes = harmonic_amplitudes / torch.arange(1, num_harmonics+1).float()
         
     # TODO Modify this to accept amplitude latent
-    def forward(self, freq, output_length_samples, global_time_latent=None, amplitude=None, t=None):
+    def forward(self, freq, output_length_samples, global_time_latent, amplitude, t):
         time = torch.linspace(t, output_length_samples / self.sr, output_length_samples).to(self.device)
         x = freq * time * self.sr
-        waveform = torch.sin(x+self.phase)
+        
+        amplitude = self.map_fundamental_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
+        scale = amplitude
+                
+        waveform = scale*torch.sin(x+self.phase)
         for i in range(1, len(self.harmonic_amplitudes)):
             # Convert frequency to hz and check if it is above half the sampling rate
             freq_hz = freq * self.sr / (2 * 3.14159)
-            scale = 1.0
-            if amplitude is not None:
-                scale = self.map_fundamental_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
-            
+
             if freq_hz * (i+1) > self.sr / 2:
                 scale = 1e-4
             hamps = self.harmonic_amplitudes
