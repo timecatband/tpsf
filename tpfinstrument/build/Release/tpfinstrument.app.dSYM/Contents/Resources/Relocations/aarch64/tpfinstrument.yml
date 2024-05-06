@@ -1,6 +1,6 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/racarr/Desktop/tpfinstrument/build/Release/tpfinstrument.app/Contents/MacOS/tpfinstrument'
+binary-path:     '/Users/racarr/src/tpf/tpfinstrument/build/Release/tpfinstrument.app/Contents/MacOS/tpfinstrument'
 relocations:
   - { offsetInCU: 0xBB, offset: 0xF170D, size: 0x8, addend: 0x0, symName: '_$s13tpfinstrument18AudioUnitHostModelC04loadbC033_A271528C037DB4FBEC57FBEE6D1FC56CLLyyFys6ResultOySbs5Error_pG_So16NSViewControllerCSgtcfU_', symObjAddr: 0x3E8, symBinAddr: 0x100002860, symSize: 0x36C }
   - { offsetInCU: 0x3D0, offset: 0xF1A22, size: 0x8, addend: 0x0, symName: '_$s13tpfinstrument16SimplePlayEngineC11avAudioUnit33_DC09733E335557E41245C18B25F041A9LLSo07AVAudioG0CSgvpfi', symObjAddr: 0xA54, symBinAddr: 0x100002ECC, symSize: 0x8 }

@@ -1,4 +1,0 @@
-Target dependency graph (2 targets)
-Target 'tpfinstrument' in project 'tpfinstrument'
-➜ Explicit dependency on target 'tpfinstrumentExtension' in project 'tpfinstrument'
-Target 'tpfinstrumentExtension' in project 'tpfinstrument' (no dependencies)

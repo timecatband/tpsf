@@ -22,7 +22,7 @@ class SpectrogramLoss(nn.Module):
         return self.loss(x, y)
     
 class MultiScaleSpectrogramLoss(nn.Module):
-    def __init__(self, sample_rate, n_fft_sizes=(2048, 1024, 512), loss_type='L1'):
+    def __init__(self, sample_rate, n_fft_sizes=(2048, 1024, 512), loss_type='MSE'):
         super().__init__()
         self.sample_rate = sample_rate
         self.n_fft_sizes = n_fft_sizes

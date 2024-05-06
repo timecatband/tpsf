@@ -31,6 +31,7 @@ class SubtractiveNoiseSynth(nn.Module):
 
         # Apply filter
         # Turning both passes on triggers divergence
+        noise = self.filter1(noise, t)
         filtered_noise = self.filter2(noise, t)
         filtered_noise = filtered_noise / torch.max(torch.abs(filtered_noise))
         output = self.envelope(filtered_noise, t)

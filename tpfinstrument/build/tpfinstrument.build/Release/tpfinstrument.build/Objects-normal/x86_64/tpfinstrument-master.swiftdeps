@@ -1,16 +1,16 @@
 version: "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)"
-options: "0966e2f052f8e6fb204b0419ac4c5dc513d71323a92e6f338016ae7bcffea1b2"
-build_start_time: [1714971283, 502854000]
-build_end_time: [1714971288, 290439000]
+options: "276a70ca8265855ea0f4e6adc9cdab5923d87d92cef31f7b2deb0da05a2d15ca"
+build_start_time: [1715013047, 758560000]
+build_end_time: [1715013048, 775174000]
 inputs:
-  ? "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/DerivedSources/GeneratedAssetSymbols.swift"
-  : [1714971283, 494864360]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Common/Audio/SimplePlayEngine.swift": [1714971125, 164400623]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Common/MIDI/MIDIManager.swift": [1714971125, 165622588]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Common/String/StringHelpers.swift": [1714971125, 167691925]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Common/TypeAliases.swift": [1714971125, 166628929]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Common/UI/ViewControllerRepresentable.swift": [1714971125, 160706236]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/ContentView.swift": [1714971125, 157617102]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Model/AudioUnitHostModel.swift": [1714971125, 168933135]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Model/AudioUnitViewModel.swift": [1714971125, 169947891]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/tpfinstrumentApp.swift": [1714971125, 171631513]
+  ? "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/DerivedSources/GeneratedAssetSymbols.swift"
+  : [1715013047, 750779863]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/Audio/SimplePlayEngine.swift": [1714971125, 164400623]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/MIDI/MIDIManager.swift": [1714971125, 165622588]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/String/StringHelpers.swift": [1714971125, 167691925]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/TypeAliases.swift": [1714971125, 166628929]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Common/UI/ViewControllerRepresentable.swift": [1714971125, 160706236]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/ContentView.swift": [1714971125, 157617102]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Model/AudioUnitHostModel.swift": [1714971125, 168933135]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/Model/AudioUnitViewModel.swift": [1714971125, 169947891]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrument/tpfinstrumentApp.swift": [1714971125, 171631513]

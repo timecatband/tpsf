@@ -2,7 +2,7 @@ import torch
 import torchaudio
 import torch.nn as nn
 from effects.reverb import LearnableParametricIRReverb
-
+from synth.oscillator import HarmonicScaler
 class LearnableMidiSynth(nn.Module):
     def __init__(self, sr, synth, effect_chain, enable_time_latent = True, time_latent_size = 2):
         super().__init__()
@@ -23,6 +23,8 @@ class LearnableMidiSynth(nn.Module):
             nn.ReLU(),
             nn.Linear(32, time_latent_size)
         )
+        self.harmonic_scaler = HarmonicScaler(8, time_latent_size)
+        
     def forward(self, note_events, output, t):
         duration_samples = output.shape[0]
         for freq_rad, velocity, start_sample, end_sample in note_events:
@@ -36,11 +38,9 @@ class LearnableMidiSynth(nn.Module):
             time_latent = None
             if self.enable_time_latent:
                 time_latent = self.time_embedder(torch.tensor([normalized_global_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
-            segment = self.synth(freq_rad, output_length, time_latent, velocity/127.0, t)
-            
-            # TODO: Move this in to synth
-            # Normalize midi velocity
-            segment *= velocity / 127.0
+            velocity = velocity / 127.0
+            hamps, velocity = self.harmonic_scaler(freq_rad, time_latent, velocity)
+            segment = self.synth(freq_rad, output_length, hamps, velocity, t)
             
             # Apply the tapering window
             segment[-self.window_length:] *= self.window

@@ -22,6 +22,14 @@
  As a non-ObjC class, this is safe to use from render thread.
  */
 class tpfinstrumentExtensionDSPKernel {
+    struct ActiveNoteInfo
+    {
+        double velocity;
+        double freqHz;
+        uint32_t framesRendered = 0;
+    };
+    std::vector<ActiveNoteInfo> mActiveNotes;
+
 public:
     void initialize(int channelCount, double inSampleRate) {
         mSampleRate = inSampleRate;
@@ -167,12 +175,18 @@ public:
         switch (message.channelVoice2.status) {
             case kMIDICVStatusNoteOff: {
                 mNoteEnvelope = 0.0;
+                mActiveNotes.erase(std::remove_if(mActiveNotes.begin(), mActiveNotes.end(), [&note](const ActiveNoteInfo& info) {
+                    return note.number == info.freqHz;
+                }), mActiveNotes.end());
             }
-                break;
+            break;
                 
             case kMIDICVStatusNoteOn: {
                 const auto velocity = message.channelVoice2.note.velocity;
                 const auto freqHertz   = MIDINoteToFrequency(note.number);
+
+                ActiveNoteInfo info = ActiveNoteInfo{velocity/127.0, freqHertz};
+                mActiveNotes.push_back(info);
 
                 mSinOsc = SinOscillator(mSampleRate);
                 
@@ -182,7 +196,7 @@ public:
                 // Use velocity to set amp envelope level
                 mNoteEnvelope = (double)velocity / (double)std::numeric_limits<std::uint16_t>::max();
             }
-                break;
+            break;
                 
             default:
                 break;

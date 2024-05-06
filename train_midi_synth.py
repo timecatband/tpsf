@@ -30,6 +30,9 @@ midi_events = process_midi(midi_file, sr)
 #,PeriodicAllPassFilter[order=3],SoftClipping,Lowpass[sample_rate=44100],NotchFilter[sample_rate=44100]")
 effect_string = "SubtractiveSynth[sr=44100],"
 effect_string += "Envelope[stages=4],"
+effect_string += "SubtractiveSynth[sr=44100],"
+effect_string += "Envelope[stages=4],"
+
 effect_string += "ComplexOscillator[starting_freq=3.0,sr=44100],"
 effect_string += "ComplexOscillator[starting_freq=1.5,sr=44100],"
 effect_string += "ParametricIRReverb[length=44100,sampling_rate=44100],"

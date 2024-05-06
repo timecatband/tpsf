@@ -15,10 +15,10 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			87kKfXxxYG5dt5bJpwOpthTduiM=
+			BCS+QODUOkFPnim0PxMxwaRJnI0=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"f3b90a7d7c71606e5db796c9a703a9b614ddba23" or cdhash H"78434203c2b41784b76cdd0bb5f187e6fcfc5c8c"</string>
+			<string>cdhash H"0424be40e0d43a414f9e29b43f1331c1a4499c8d" or cdhash H"a9fec001a32525e48d43ca7fbd8aa566a3cd2222"</string>
 		</dict>
 		<key>Resources/Synth.aif</key>
 		<dict>

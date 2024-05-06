@@ -1,9 +1,9 @@
-"/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Parameters/Parameters.swift":
-  const-values: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-master.swiftconstvalues"
-  swiftsourceinfo: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.swiftsourceinfo"
-  dependencies: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-master.d"
-  diagnostics: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-master.dia"
-  objc-header: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-Swift.h"
-  abi-baseline-json: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.abi.json"
-  swiftdoc: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.swiftdoc"
-  swiftmodule: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.swiftmodule"
+"/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Parameters/Parameters.swift":
+  swiftmodule: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.swiftmodule"
+  abi-baseline-json: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.abi.json"
+  swiftdoc: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.swiftdoc"
+  dependencies: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-master.d"
+  swiftsourceinfo: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension.swiftsourceinfo"
+  objc-header: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-Swift.h"
+  diagnostics: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-master.dia"
+  const-values: "/Users/racarr/src/tpf/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/x86_64/tpfinstrumentExtension-master.swiftconstvalues"

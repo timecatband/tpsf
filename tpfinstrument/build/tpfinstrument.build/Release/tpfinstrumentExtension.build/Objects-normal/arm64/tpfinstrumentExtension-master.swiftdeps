@@ -1,13 +1,13 @@
 version: "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)"
-options: "1a0ff4db53c2fc2f50cb0648bbec15ff1c21bd0b8050798d4437bc334dd6bc4a"
-build_start_time: [1714971278, 332646000]
-build_end_time: [1714971284, 998169000]
+options: "1bd85e40b975b6326dc53bd002332a3020f493b7d293782e4b7f801446051175"
+build_start_time: [1715013046, 933333000]
+build_end_time: [1715013048, 774777000]
 inputs:
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/Parameters/ParameterSpecBase.swift": [1714971126, 417382821]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/UI/AudioUnitViewController.swift": [1714971126, 445033846]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/UI/ObservableAUParameter.swift": [1714971126, 443537293]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/Utility/CrossPlatform.swift": [1714971126, 419493300]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/Utility/String+Utils.swift": [1714971126, 420949777]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Parameters/Parameters.swift": [1714971126, 427871438]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/UI/ParameterSlider.swift": [1714971126, 432949153]
-  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/UI/tpfinstrumentExtensionMainView.swift": [1714971126, 431695846]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/Parameters/ParameterSpecBase.swift": [1714971126, 417382821]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/UI/AudioUnitViewController.swift": [1714971126, 445033846]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/UI/ObservableAUParameter.swift": [1714971126, 443537293]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/Utility/CrossPlatform.swift": [1714971126, 419493300]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Common/Utility/String+Utils.swift": [1714971126, 420949777]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/Parameters/Parameters.swift": [1714971126, 427871438]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/UI/ParameterSlider.swift": [1714971126, 432949153]
+  "/Users/racarr/src/tpf/tpfinstrument/tpfinstrumentExtension/UI/tpfinstrumentExtensionMainView.swift": [1714971126, 431695846]

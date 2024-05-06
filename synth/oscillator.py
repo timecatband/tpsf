@@ -32,6 +32,42 @@ class LearnableSineOscillator(nn.Module):
         freq_hz = self.freq_rad * self.sr / (2 * 3.14159)
         print("freq_hz: ", freq_hz)
         
+class HarmonicScaler(nn.Module):    
+    def __init__(self, num_harmonics, time_latent_size):
+        super(HarmonicScaler, self).__init__()
+        self.scale_harmonic_amps_by_freq = nn.Sequential(
+            nn.Linear(1, 32),
+            nn.ReLU(),
+            nn.Linear(32, num_harmonics)
+        )
+        self.scale_harmonic_amps_by_time_latent = nn.Sequential(
+            nn.Linear(time_latent_size, 32),
+            nn.ReLU(),
+            nn.Linear(32, num_harmonics)
+        )
+        self.scale_harmonic_amps_by_fundamental_amplitude = nn.Sequential(
+            nn.Linear(1, 8),
+            nn.ReLU(),
+            nn.Linear(8,num_harmonics)
+        )
+        self.scale_fundamental_amplitude = nn.Sequential(
+            nn.Linear(1, 4),
+            nn.ReLU(),
+            nn.Linear(4,1)
+        )
+        self.num_harmonics = num_harmonics
+        if torch.cuda is not None and torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        else:
+            self.device = torch.device("cpu")
+    def forward(self, freq, global_time_latent, amplitude):
+        hamps = torch.ones(self.num_harmonics).to(self.device)
+        hamps = hamps*self.scale_harmonic_amps_by_freq(torch.tensor([freq]).unsqueeze(0).to(self.device))
+        hamps = hamps*self.scale_harmonic_amps_by_time_latent(global_time_latent.unsqueeze(0).to(self.device)).squeeze(0)
+        amplitude = self.scale_fundamental_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
+        hamps = hamps * self.scale_harmonic_amps_by_fundamental_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
+        return hamps, amplitude
+        
 class LearnableHarmonicSynth(nn.Module):
     def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True, time_latent_size=2):
         super(LearnableHarmonicSynth, self).__init__()
@@ -46,37 +82,15 @@ class LearnableHarmonicSynth(nn.Module):
         else:
             self.device = torch.device("cpu")
             
-        self.amplitude_scaler = nn.Sequential(
-            nn.Linear(1, 32),
-            nn.ReLU(),
-            nn.Linear(32, num_harmonics)
-        )
-        self.map_time_latent = nn.Sequential(
-            nn.Linear(time_latent_size, 32),
-            nn.ReLU(),
-            nn.Linear(32, num_harmonics)
-        )
-        self.map_amplitude = nn.Sequential(
-            nn.Linear(1, 8),
-            nn.ReLU(),
-            nn.Linear(8,num_harmonics)
-        )
-        self.map_fundamental_amplitude = nn.Sequential(
-            nn.Linear(1, 4),
-            nn.ReLU(),
-            nn.Linear(4,1)
-        )
+
         self.static_detune = nn.Parameter(torch.tensor(0.0))
         # Rescale harmonic amplitudes to decay
        # self.harmonic_amplitudes = harmonic_amplitudes / torch.arange(1, num_harmonics+1).float()
         
     # TODO Modify this to accept amplitude latent
-    def forward(self, freq, output_length_samples, global_time_latent, amplitude, t):
+    def forward(self, freq, output_length_samples, hamps, scale, t):
         time = torch.linspace(t, output_length_samples / self.sr, output_length_samples).to(self.device)
         x = freq * time * self.sr
-        
-        amplitude = self.map_fundamental_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
-        scale = amplitude
                 
         waveform = scale*torch.sin(x+self.phase)
         for i in range(1, len(self.harmonic_amplitudes)):
@@ -86,12 +100,6 @@ class LearnableHarmonicSynth(nn.Module):
             if freq_hz * (i+1) > self.sr / 2:
                 scale = 1e-4
             hamps = self.harmonic_amplitudes
-            if self.amplitude_scaler is not None:
-                hamps = hamps*self.amplitude_scaler(torch.tensor([freq]).unsqueeze(0).to(self.device))
-            if global_time_latent is not None:
-                hamps = hamps*self.map_time_latent(global_time_latent.unsqueeze(0).to(self.device)).squeeze(0)
-            if amplitude is not None:
-                hamps = hamps * self.map_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
             waveform += scale * torch.sin((i+1) * x+self.phase) * self.harmonic_amplitudes[i]
         # TODO...maybe this is bad
         waveform = waveform / waveform.abs().max()
