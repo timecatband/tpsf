@@ -1,0 +1,9 @@
+"/Users/racarr/Desktop/tpfinstrument/tpfinstrument/Model/AudioUnitHostModel.swift":
+  objc-header: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument-Swift.h"
+  dependencies: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument-master.d"
+  swiftmodule: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument.swiftmodule"
+  abi-baseline-json: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument.abi.json"
+  swiftsourceinfo: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument.swiftsourceinfo"
+  diagnostics: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument-master.dia"
+  const-values: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument-master.swiftconstvalues"
+  swiftdoc: "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrument.build/Objects-normal/arm64/tpfinstrument.swiftdoc"

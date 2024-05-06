@@ -1,0 +1,50 @@
+{
+  "" : {
+    "const-values" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtension-master.swiftconstvalues",
+    "dependencies" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtension-master.d",
+    "diagnostics" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtension-master.dia",
+    "emit-module-dependencies" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtension-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtension-master-emit-module.dia",
+    "swift-dependencies" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtension-master.swiftdeps"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/Parameters/ParameterSpecBase.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ParameterSpecBase.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ParameterSpecBase.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ParameterSpecBase.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/UI/AudioUnitViewController.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/AudioUnitViewController.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/AudioUnitViewController.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/AudioUnitViewController.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/UI/ObservableAUParameter.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ObservableAUParameter.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ObservableAUParameter.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ObservableAUParameter.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/Utility/CrossPlatform.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/CrossPlatform.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/CrossPlatform.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/CrossPlatform.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Common/Utility/String+Utils.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/String+Utils.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/String+Utils.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/String+Utils.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/Parameters/Parameters.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/Parameters.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/Parameters.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/Parameters.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/UI/ParameterSlider.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ParameterSlider.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ParameterSlider.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/ParameterSlider.o"
+  },
+  "/Users/racarr/Desktop/tpfinstrument/tpfinstrumentExtension/UI/tpfinstrumentExtensionMainView.swift" : {
+    "index-unit-output-path" : "/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtensionMainView.o",
+    "llvm-bc" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtensionMainView.bc",
+    "object" : "/Users/racarr/Desktop/tpfinstrument/build/tpfinstrument.build/Release/tpfinstrumentExtension.build/Objects-normal/arm64/tpfinstrumentExtensionMainView.o"
+  }
+}

@@ -1,0 +1,979 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2AA654D12BE89975003BD7A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654D02BE89975003BD7A1 /* ContentView.swift */; };
+		2AA654D52BE89975003BD7A1 /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654D42BE89975003BD7A1 /* ViewControllerRepresentable.swift */; };
+		2AA654D82BE89975003BD7A1 /* Synth.aif in Resources */ = {isa = PBXBuildFile; fileRef = 2AA654D72BE89975003BD7A1 /* Synth.aif */; };
+		2AA654DA2BE89975003BD7A1 /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654D92BE89975003BD7A1 /* SimplePlayEngine.swift */; };
+		2AA654DD2BE89975003BD7A1 /* MIDIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654DC2BE89975003BD7A1 /* MIDIManager.swift */; };
+		2AA654DF2BE89975003BD7A1 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654DE2BE89975003BD7A1 /* TypeAliases.swift */; };
+		2AA654E22BE89975003BD7A1 /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654E12BE89975003BD7A1 /* StringHelpers.swift */; };
+		2AA654E52BE89975003BD7A1 /* AudioUnitHostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654E42BE89975003BD7A1 /* AudioUnitHostModel.swift */; };
+		2AA654E72BE89975003BD7A1 /* AudioUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654E62BE89975003BD7A1 /* AudioUnitViewModel.swift */; };
+		2AA654E92BE89975003BD7A1 /* tpfinstrumentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654E82BE89975003BD7A1 /* tpfinstrumentApp.swift */; };
+		2AA654EC2BE89975003BD7A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AA654EB2BE89975003BD7A1 /* Preview Assets.xcassets */; };
+		2AA654EE2BE89976003BD7A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AA654ED2BE89976003BD7A1 /* Assets.xcassets */; };
+		2AA654F92BE89976003BD7A1 /* tpfinstrumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA654F82BE89976003BD7A1 /* tpfinstrumentTests.swift */; };
+		2AA655032BE89976003BD7A1 /* tpfinstrumentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655022BE89976003BD7A1 /* tpfinstrumentUITests.swift */; };
+		2AA655052BE89976003BD7A1 /* tpfinstrumentUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655042BE89976003BD7A1 /* tpfinstrumentUITestsLaunchTests.swift */; };
+		2AA6550B2BE89976003BD7A1 /* tpfinstrumentExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2AA6550A2BE89976003BD7A1 /* tpfinstrumentExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2AA655102BE89976003BD7A1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6550F2BE89976003BD7A1 /* README.md */; };
+		2AA655152BE89976003BD7A1 /* ParameterSpecBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655142BE89976003BD7A1 /* ParameterSpecBase.swift */; };
+		2AA655182BE89976003BD7A1 /* CrossPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655172BE89976003BD7A1 /* CrossPlatform.swift */; };
+		2AA6551A2BE89976003BD7A1 /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655192BE89976003BD7A1 /* String+Utils.swift */; };
+		2AA6551E2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6551D2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.mm */; };
+		2AA655212BE89976003BD7A1 /* tpfinstrumentExtensionAUProcessHelper.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 2AA655202BE89976003BD7A1 /* tpfinstrumentExtensionAUProcessHelper.hpp */; };
+		2AA655252BE89976003BD7A1 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655242BE89976003BD7A1 /* Parameters.swift */; };
+		2AA655292BE89976003BD7A1 /* tpfinstrumentExtensionDSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 2AA655282BE89976003BD7A1 /* tpfinstrumentExtensionDSPKernel.hpp */; };
+		2AA6552C2BE89976003BD7A1 /* tpfinstrumentExtensionMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6552B2BE89976003BD7A1 /* tpfinstrumentExtensionMainView.swift */; };
+		2AA6552E2BE89976003BD7A1 /* ParameterSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6552D2BE89976003BD7A1 /* ParameterSlider.swift */; };
+		2AA655332BE89976003BD7A1 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 2AA655322BE89976003BD7A1 /* Base */; };
+		2AA655352BE89976003BD7A1 /* ObservableAUParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655342BE89976003BD7A1 /* ObservableAUParameter.swift */; };
+		2AA655372BE89976003BD7A1 /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA655362BE89976003BD7A1 /* AudioUnitViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2AA654F52BE89976003BD7A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2AA654C52BE89975003BD7A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2AA654CC2BE89975003BD7A1;
+			remoteInfo = tpfinstrument;
+		};
+		2AA654FF2BE89976003BD7A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2AA654C52BE89975003BD7A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2AA654CC2BE89975003BD7A1;
+			remoteInfo = tpfinstrument;
+		};
+		2AA6550C2BE89976003BD7A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2AA654C52BE89975003BD7A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2AA655092BE89976003BD7A1;
+			remoteInfo = tpfinstrumentExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2AA6553E2BE89976003BD7A1 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2AA6550B2BE89976003BD7A1 /* tpfinstrumentExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2AA654CD2BE89975003BD7A1 /* tpfinstrument.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tpfinstrument.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AA654D02BE89975003BD7A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2AA654D42BE89975003BD7A1 /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
+		2AA654D72BE89975003BD7A1 /* Synth.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Synth.aif; sourceTree = "<group>"; };
+		2AA654D92BE89975003BD7A1 /* SimplePlayEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
+		2AA654DC2BE89975003BD7A1 /* MIDIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIManager.swift; sourceTree = "<group>"; };
+		2AA654DE2BE89975003BD7A1 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		2AA654E12BE89975003BD7A1 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
+		2AA654E42BE89975003BD7A1 /* AudioUnitHostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitHostModel.swift; sourceTree = "<group>"; };
+		2AA654E62BE89975003BD7A1 /* AudioUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewModel.swift; sourceTree = "<group>"; };
+		2AA654E82BE89975003BD7A1 /* tpfinstrumentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tpfinstrumentApp.swift; sourceTree = "<group>"; };
+		2AA654EB2BE89975003BD7A1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2AA654ED2BE89976003BD7A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2AA654EF2BE89976003BD7A1 /* tpfinstrument.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tpfinstrument.entitlements; sourceTree = "<group>"; };
+		2AA654F42BE89976003BD7A1 /* tpfinstrumentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tpfinstrumentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AA654F82BE89976003BD7A1 /* tpfinstrumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tpfinstrumentTests.swift; sourceTree = "<group>"; };
+		2AA654FE2BE89976003BD7A1 /* tpfinstrumentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tpfinstrumentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AA655022BE89976003BD7A1 /* tpfinstrumentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tpfinstrumentUITests.swift; sourceTree = "<group>"; };
+		2AA655042BE89976003BD7A1 /* tpfinstrumentUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tpfinstrumentUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2AA6550A2BE89976003BD7A1 /* tpfinstrumentExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tpfinstrumentExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AA6550F2BE89976003BD7A1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		2AA655122BE89976003BD7A1 /* tpfinstrumentExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "tpfinstrumentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		2AA655142BE89976003BD7A1 /* ParameterSpecBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSpecBase.swift; sourceTree = "<group>"; };
+		2AA655172BE89976003BD7A1 /* CrossPlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossPlatform.swift; sourceTree = "<group>"; };
+		2AA655192BE89976003BD7A1 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
+		2AA6551C2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tpfinstrumentExtensionAudioUnit.h; sourceTree = "<group>"; };
+		2AA6551D2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = tpfinstrumentExtensionAudioUnit.mm; sourceTree = "<group>"; };
+		2AA655202BE89976003BD7A1 /* tpfinstrumentExtensionAUProcessHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tpfinstrumentExtensionAUProcessHelper.hpp; sourceTree = "<group>"; };
+		2AA655232BE89976003BD7A1 /* tpfinstrumentExtensionParameterAddresses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tpfinstrumentExtensionParameterAddresses.h; sourceTree = "<group>"; };
+		2AA655242BE89976003BD7A1 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		2AA655272BE89976003BD7A1 /* SinOscillator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinOscillator.h; sourceTree = "<group>"; };
+		2AA655282BE89976003BD7A1 /* tpfinstrumentExtensionDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tpfinstrumentExtensionDSPKernel.hpp; sourceTree = "<group>"; };
+		2AA6552B2BE89976003BD7A1 /* tpfinstrumentExtensionMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tpfinstrumentExtensionMainView.swift; sourceTree = "<group>"; };
+		2AA6552D2BE89976003BD7A1 /* ParameterSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSlider.swift; sourceTree = "<group>"; };
+		2AA655322BE89976003BD7A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = AudioUnitViewController.xib; sourceTree = "<group>"; };
+		2AA655342BE89976003BD7A1 /* ObservableAUParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableAUParameter.swift; sourceTree = "<group>"; };
+		2AA655362BE89976003BD7A1 /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
+		2AA655382BE89976003BD7A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2AA654CA2BE89975003BD7A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA654F12BE89976003BD7A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA654FB2BE89976003BD7A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA655072BE89976003BD7A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2AA654C42BE89975003BD7A1 = {
+			isa = PBXGroup;
+			children = (
+				2AA654CF2BE89975003BD7A1 /* tpfinstrument */,
+				2AA654F72BE89976003BD7A1 /* tpfinstrumentTests */,
+				2AA655012BE89976003BD7A1 /* tpfinstrumentUITests */,
+				2AA6550E2BE89976003BD7A1 /* tpfinstrumentExtension */,
+				2AA654CE2BE89975003BD7A1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2AA654CE2BE89975003BD7A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654CD2BE89975003BD7A1 /* tpfinstrument.app */,
+				2AA654F42BE89976003BD7A1 /* tpfinstrumentTests.xctest */,
+				2AA654FE2BE89976003BD7A1 /* tpfinstrumentUITests.xctest */,
+				2AA6550A2BE89976003BD7A1 /* tpfinstrumentExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2AA654CF2BE89975003BD7A1 /* tpfinstrument */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654D02BE89975003BD7A1 /* ContentView.swift */,
+				2AA654E82BE89975003BD7A1 /* tpfinstrumentApp.swift */,
+				2AA654ED2BE89976003BD7A1 /* Assets.xcassets */,
+				2AA654EF2BE89976003BD7A1 /* tpfinstrument.entitlements */,
+				2AA654D22BE89975003BD7A1 /* Common */,
+				2AA654E32BE89975003BD7A1 /* Model */,
+				2AA654EA2BE89975003BD7A1 /* Preview Content */,
+			);
+			path = tpfinstrument;
+			sourceTree = "<group>";
+		};
+		2AA654D22BE89975003BD7A1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654DE2BE89975003BD7A1 /* TypeAliases.swift */,
+				2AA654D32BE89975003BD7A1 /* UI */,
+				2AA654D62BE89975003BD7A1 /* Audio */,
+				2AA654DB2BE89975003BD7A1 /* MIDI */,
+				2AA654E02BE89975003BD7A1 /* String */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2AA654D32BE89975003BD7A1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654D42BE89975003BD7A1 /* ViewControllerRepresentable.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		2AA654D62BE89975003BD7A1 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654D72BE89975003BD7A1 /* Synth.aif */,
+				2AA654D92BE89975003BD7A1 /* SimplePlayEngine.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		2AA654DB2BE89975003BD7A1 /* MIDI */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654DC2BE89975003BD7A1 /* MIDIManager.swift */,
+			);
+			path = MIDI;
+			sourceTree = "<group>";
+		};
+		2AA654E02BE89975003BD7A1 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654E12BE89975003BD7A1 /* StringHelpers.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
+		2AA654E32BE89975003BD7A1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654E42BE89975003BD7A1 /* AudioUnitHostModel.swift */,
+				2AA654E62BE89975003BD7A1 /* AudioUnitViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2AA654EA2BE89975003BD7A1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654EB2BE89975003BD7A1 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2AA654F72BE89976003BD7A1 /* tpfinstrumentTests */ = {
+			isa = PBXGroup;
+			children = (
+				2AA654F82BE89976003BD7A1 /* tpfinstrumentTests.swift */,
+			);
+			path = tpfinstrumentTests;
+			sourceTree = "<group>";
+		};
+		2AA655012BE89976003BD7A1 /* tpfinstrumentUITests */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655022BE89976003BD7A1 /* tpfinstrumentUITests.swift */,
+				2AA655042BE89976003BD7A1 /* tpfinstrumentUITestsLaunchTests.swift */,
+			);
+			path = tpfinstrumentUITests;
+			sourceTree = "<group>";
+		};
+		2AA6550E2BE89976003BD7A1 /* tpfinstrumentExtension */ = {
+			isa = PBXGroup;
+			children = (
+				2AA6550F2BE89976003BD7A1 /* README.md */,
+				2AA655382BE89976003BD7A1 /* Info.plist */,
+				2AA655112BE89976003BD7A1 /* Common */,
+				2AA655222BE89976003BD7A1 /* Parameters */,
+				2AA655262BE89976003BD7A1 /* DSP */,
+				2AA6552A2BE89976003BD7A1 /* UI */,
+			);
+			path = tpfinstrumentExtension;
+			sourceTree = "<group>";
+		};
+		2AA655112BE89976003BD7A1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655122BE89976003BD7A1 /* tpfinstrumentExtension-Bridging-Header.h */,
+				2AA655132BE89976003BD7A1 /* Parameters */,
+				2AA655162BE89976003BD7A1 /* Utility */,
+				2AA6551B2BE89976003BD7A1 /* Audio Unit */,
+				2AA6551F2BE89976003BD7A1 /* DSP */,
+				2AA6552F2BE89976003BD7A1 /* UI */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2AA655132BE89976003BD7A1 /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655142BE89976003BD7A1 /* ParameterSpecBase.swift */,
+			);
+			path = Parameters;
+			sourceTree = "<group>";
+		};
+		2AA655162BE89976003BD7A1 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655172BE89976003BD7A1 /* CrossPlatform.swift */,
+				2AA655192BE89976003BD7A1 /* String+Utils.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		2AA6551B2BE89976003BD7A1 /* Audio Unit */ = {
+			isa = PBXGroup;
+			children = (
+				2AA6551C2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.h */,
+				2AA6551D2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.mm */,
+			);
+			path = "Audio Unit";
+			sourceTree = "<group>";
+		};
+		2AA6551F2BE89976003BD7A1 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655202BE89976003BD7A1 /* tpfinstrumentExtensionAUProcessHelper.hpp */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		2AA655222BE89976003BD7A1 /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655232BE89976003BD7A1 /* tpfinstrumentExtensionParameterAddresses.h */,
+				2AA655242BE89976003BD7A1 /* Parameters.swift */,
+			);
+			path = Parameters;
+			sourceTree = "<group>";
+		};
+		2AA655262BE89976003BD7A1 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655272BE89976003BD7A1 /* SinOscillator.h */,
+				2AA655282BE89976003BD7A1 /* tpfinstrumentExtensionDSPKernel.hpp */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		2AA6552A2BE89976003BD7A1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2AA6552B2BE89976003BD7A1 /* tpfinstrumentExtensionMainView.swift */,
+				2AA6552D2BE89976003BD7A1 /* ParameterSlider.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		2AA6552F2BE89976003BD7A1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655342BE89976003BD7A1 /* ObservableAUParameter.swift */,
+				2AA655362BE89976003BD7A1 /* AudioUnitViewController.swift */,
+				2AA655302BE89976003BD7A1 /* Base.lproj */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		2AA655302BE89976003BD7A1 /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				2AA655312BE89976003BD7A1 /* AudioUnitViewController.xib */,
+			);
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2AA654CC2BE89975003BD7A1 /* tpfinstrument */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2AA6553F2BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrument" */;
+			buildPhases = (
+				2AA654C92BE89975003BD7A1 /* Sources */,
+				2AA654CA2BE89975003BD7A1 /* Frameworks */,
+				2AA654CB2BE89975003BD7A1 /* Resources */,
+				2AA6553E2BE89976003BD7A1 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2AA6550D2BE89976003BD7A1 /* PBXTargetDependency */,
+			);
+			name = tpfinstrument;
+			productName = tpfinstrument;
+			productReference = 2AA654CD2BE89975003BD7A1 /* tpfinstrument.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2AA654F32BE89976003BD7A1 /* tpfinstrumentTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2AA655422BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrumentTests" */;
+			buildPhases = (
+				2AA654F02BE89976003BD7A1 /* Sources */,
+				2AA654F12BE89976003BD7A1 /* Frameworks */,
+				2AA654F22BE89976003BD7A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2AA654F62BE89976003BD7A1 /* PBXTargetDependency */,
+			);
+			name = tpfinstrumentTests;
+			productName = tpfinstrumentTests;
+			productReference = 2AA654F42BE89976003BD7A1 /* tpfinstrumentTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2AA654FD2BE89976003BD7A1 /* tpfinstrumentUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2AA655452BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrumentUITests" */;
+			buildPhases = (
+				2AA654FA2BE89976003BD7A1 /* Sources */,
+				2AA654FB2BE89976003BD7A1 /* Frameworks */,
+				2AA654FC2BE89976003BD7A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2AA655002BE89976003BD7A1 /* PBXTargetDependency */,
+			);
+			name = tpfinstrumentUITests;
+			productName = tpfinstrumentUITests;
+			productReference = 2AA654FE2BE89976003BD7A1 /* tpfinstrumentUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		2AA655092BE89976003BD7A1 /* tpfinstrumentExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2AA6553B2BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrumentExtension" */;
+			buildPhases = (
+				2AA655062BE89976003BD7A1 /* Sources */,
+				2AA655072BE89976003BD7A1 /* Frameworks */,
+				2AA655082BE89976003BD7A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tpfinstrumentExtension;
+			productName = tpfinstrumentExtension;
+			productReference = 2AA6550A2BE89976003BD7A1 /* tpfinstrumentExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2AA654C52BE89975003BD7A1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					2AA654CC2BE89975003BD7A1 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					2AA654F32BE89976003BD7A1 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 2AA654CC2BE89975003BD7A1;
+					};
+					2AA654FD2BE89976003BD7A1 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 2AA654CC2BE89975003BD7A1;
+					};
+					2AA655092BE89976003BD7A1 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = 2AA654C82BE89975003BD7A1 /* Build configuration list for PBXProject "tpfinstrument" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2AA654C42BE89975003BD7A1;
+			productRefGroup = 2AA654CE2BE89975003BD7A1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2AA654CC2BE89975003BD7A1 /* tpfinstrument */,
+				2AA654F32BE89976003BD7A1 /* tpfinstrumentTests */,
+				2AA654FD2BE89976003BD7A1 /* tpfinstrumentUITests */,
+				2AA655092BE89976003BD7A1 /* tpfinstrumentExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2AA654CB2BE89975003BD7A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA654EC2BE89975003BD7A1 /* Preview Assets.xcassets in Resources */,
+				2AA654EE2BE89976003BD7A1 /* Assets.xcassets in Resources */,
+				2AA654D82BE89975003BD7A1 /* Synth.aif in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA654F22BE89976003BD7A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA654FC2BE89976003BD7A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA655082BE89976003BD7A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA655292BE89976003BD7A1 /* tpfinstrumentExtensionDSPKernel.hpp in Resources */,
+				2AA655212BE89976003BD7A1 /* tpfinstrumentExtensionAUProcessHelper.hpp in Resources */,
+				2AA655102BE89976003BD7A1 /* README.md in Resources */,
+				2AA655332BE89976003BD7A1 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2AA654C92BE89975003BD7A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA654E52BE89975003BD7A1 /* AudioUnitHostModel.swift in Sources */,
+				2AA654E72BE89975003BD7A1 /* AudioUnitViewModel.swift in Sources */,
+				2AA654E92BE89975003BD7A1 /* tpfinstrumentApp.swift in Sources */,
+				2AA654D12BE89975003BD7A1 /* ContentView.swift in Sources */,
+				2AA654D52BE89975003BD7A1 /* ViewControllerRepresentable.swift in Sources */,
+				2AA654E22BE89975003BD7A1 /* StringHelpers.swift in Sources */,
+				2AA654DD2BE89975003BD7A1 /* MIDIManager.swift in Sources */,
+				2AA654DF2BE89975003BD7A1 /* TypeAliases.swift in Sources */,
+				2AA654DA2BE89975003BD7A1 /* SimplePlayEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA654F02BE89976003BD7A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA654F92BE89976003BD7A1 /* tpfinstrumentTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA654FA2BE89976003BD7A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA655052BE89976003BD7A1 /* tpfinstrumentUITestsLaunchTests.swift in Sources */,
+				2AA655032BE89976003BD7A1 /* tpfinstrumentUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2AA655062BE89976003BD7A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA655252BE89976003BD7A1 /* Parameters.swift in Sources */,
+				2AA6551E2BE89976003BD7A1 /* tpfinstrumentExtensionAudioUnit.mm in Sources */,
+				2AA655352BE89976003BD7A1 /* ObservableAUParameter.swift in Sources */,
+				2AA655152BE89976003BD7A1 /* ParameterSpecBase.swift in Sources */,
+				2AA655182BE89976003BD7A1 /* CrossPlatform.swift in Sources */,
+				2AA655372BE89976003BD7A1 /* AudioUnitViewController.swift in Sources */,
+				2AA6552E2BE89976003BD7A1 /* ParameterSlider.swift in Sources */,
+				2AA6551A2BE89976003BD7A1 /* String+Utils.swift in Sources */,
+				2AA6552C2BE89976003BD7A1 /* tpfinstrumentExtensionMainView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2AA654F62BE89976003BD7A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2AA654CC2BE89975003BD7A1 /* tpfinstrument */;
+			targetProxy = 2AA654F52BE89976003BD7A1 /* PBXContainerItemProxy */;
+		};
+		2AA655002BE89976003BD7A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2AA654CC2BE89975003BD7A1 /* tpfinstrument */;
+			targetProxy = 2AA654FF2BE89976003BD7A1 /* PBXContainerItemProxy */;
+		};
+		2AA6550D2BE89976003BD7A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2AA655092BE89976003BD7A1 /* tpfinstrumentExtension */;
+			targetProxy = 2AA6550C2BE89976003BD7A1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2AA655312BE89976003BD7A1 /* AudioUnitViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2AA655322BE89976003BD7A1 /* Base */,
+			);
+			name = AudioUnitViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2AA655392BE89976003BD7A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2AA6553A2BE89976003BD7A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		2AA6553C2BE89976003BD7A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tpfinstrumentExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tpfinstrumentExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrument.tpfinstrumentExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "tpfinstrumentExtension/Common/tpfinstrumentExtension-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2AA6553D2BE89976003BD7A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tpfinstrumentExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tpfinstrumentExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrument.tpfinstrumentExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "tpfinstrumentExtension/Common/tpfinstrumentExtension-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2AA655402BE89976003BD7A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = tpfinstrument/tpfinstrument.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"tpfinstrument/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = tpfinstrument;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					AVFoundation,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrument;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2AA655412BE89976003BD7A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = tpfinstrument/tpfinstrument.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"tpfinstrument/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = tpfinstrument;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					AVFoundation,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrument;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2AA655432BE89976003BD7A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrumentTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tpfinstrument.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/tpfinstrument";
+			};
+			name = Debug;
+		};
+		2AA655442BE89976003BD7A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrumentTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tpfinstrument.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/tpfinstrument";
+			};
+			name = Release;
+		};
+		2AA655462BE89976003BD7A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrumentUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = tpfinstrument;
+			};
+			name = Debug;
+		};
+		2AA655472BE89976003BD7A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = timecatlabs.tpfinstrumentUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = tpfinstrument;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2AA654C82BE89975003BD7A1 /* Build configuration list for PBXProject "tpfinstrument" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA655392BE89976003BD7A1 /* Debug */,
+				2AA6553A2BE89976003BD7A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2AA6553B2BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrumentExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA6553C2BE89976003BD7A1 /* Debug */,
+				2AA6553D2BE89976003BD7A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2AA6553F2BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrument" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA655402BE89976003BD7A1 /* Debug */,
+				2AA655412BE89976003BD7A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2AA655422BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrumentTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA655432BE89976003BD7A1 /* Debug */,
+				2AA655442BE89976003BD7A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2AA655452BE89976003BD7A1 /* Build configuration list for PBXNativeTarget "tpfinstrumentUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA655462BE89976003BD7A1 /* Debug */,
+				2AA655472BE89976003BD7A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2AA654C52BE89975003BD7A1 /* Project object */;
+}

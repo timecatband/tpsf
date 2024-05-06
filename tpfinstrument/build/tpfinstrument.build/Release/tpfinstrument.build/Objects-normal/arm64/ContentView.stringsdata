@@ -1,0 +1,28 @@
+{
+  "source": "/Users/racarr/Desktop/tpfinstrument/tpfinstrument/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@"
+      },
+      {
+        "comment": "",
+        "key": "Audio Playback"
+      },
+      {
+        "comment": "",
+        "key": "MIDI Input: Enabled"
+      },
+      {
+        "comment": "",
+        "key": "Stop"
+      },
+      {
+        "comment": "",
+        "key": "Play"
+      }
+    ]
+  },
+  "version": 1
+}
