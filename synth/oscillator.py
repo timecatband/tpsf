@@ -71,8 +71,8 @@ class LearnableHarmonicSynth(nn.Module):
        # self.harmonic_amplitudes = harmonic_amplitudes / torch.arange(1, num_harmonics+1).float()
         
     # TODO Modify this to accept amplitude latent
-    def forward(self, freq, output_length_samples, time_latent=None, amplitude=None):
-        time = torch.linspace(0, output_length_samples / self.sr, output_length_samples).to(self.device)
+    def forward(self, freq, output_length_samples, global_time_latent, amplitude, time_in_note):
+        time = torch.linspace(time_in_note, time_in_note + (output_length_samples / self.sr), output_length_samples).to(self.device)
         x = freq * time * self.sr
         waveform = torch.sin(x+self.phase)
         for i in range(1, len(self.harmonic_amplitudes)):
@@ -87,8 +87,8 @@ class LearnableHarmonicSynth(nn.Module):
             hamps = self.harmonic_amplitudes
             if self.amplitude_scaler is not None:
                 hamps = hamps*self.amplitude_scaler(torch.tensor([freq]).unsqueeze(0).to(self.device))
-            if time_latent is not None:
-                hamps = hamps*self.map_time_latent(time_latent.unsqueeze(0).to(self.device)).squeeze(0)
+            if global_time_latent is not None:
+                hamps = hamps*self.map_time_latent(global_time_latent.unsqueeze(0).to(self.device)).squeeze(0)
             if amplitude is not None:
                 hamps = hamps * self.map_amplitude(torch.tensor([amplitude]).unsqueeze(0).to(self.device)).squeeze(0)
             waveform += scale * torch.sin((i+1) * x+self.phase) * self.harmonic_amplitudes[i]
