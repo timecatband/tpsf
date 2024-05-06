@@ -32,11 +32,11 @@ class LearnableMidiSynth(nn.Module):
             output_length = min(end_sample, duration_samples) - start_sample
             extended_length = output_length + self.window_length
             extended_length = min(extended_length, duration_samples - start_sample)
-            normalized_t_start_global = start_sample / duration_samples
+            normalized_t_start = start_sample / duration_samples
             time_latent = None
             if self.enable_time_latent:
-                time_latent = self.time_embedder(torch.tensor([normalized_t_start_global]).to(self.device).unsqueeze(0)).squeeze(0)
-            segment = self.synth(freq_rad, output_length, time_latent, velocity/127.0, 0.0)
+                time_latent = self.time_embedder(torch.tensor([normalized_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
+            segment = self.synth(freq_rad, output_length, time_latent, velocity/127.0)
             
             # TODO: Move this in to synth
             # Normalize midi velocity
