@@ -11,6 +11,7 @@
     "effect_chain": [
         "Gain",
         "Envelope[stages=4],",
+        "BandReject[sample_rate=44100],",        
         "ParametricIRReverb[length=2048,sampling_rate=44100],",
         "SoftClipping,",
         "Exciter[sample_rate=44100]"

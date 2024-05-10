@@ -73,7 +73,7 @@ class LearnableHighpass(nn.Module):
 
         return out
 
-@effect("Bandreject")
+@effect("BandReject")
 class LearnableBandreject(nn.Module):
     def __init__(self, sample_rate, initial_freq=4000.0):
         super().__init__()
