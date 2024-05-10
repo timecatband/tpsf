@@ -31,6 +31,9 @@ if torch.cuda.is_available():
 print("Using device", dev)
 dev = torch.device(dev)
 
+
+aeloss = aeloss.to(dev)
+
 experiments_dir = sys.argv[1]
 config = parse_synth_experiment_config_from_file(experiments_dir)
 
