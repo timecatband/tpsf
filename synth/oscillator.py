@@ -236,7 +236,7 @@ def karplus_strong_vectorized(wavetable, n_samples, decay_factor):
 def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_line, feedbackamt):
     wavetable_size = wavetable.size(0)
     # Initialize the output tensor
-    samples = torch.empty(n_samples)
+    samples = torch.empty(n_samples).to(wavetable.device)
 
     # Create a temporary working copy of the wavetable
     current_wavetable = wavetable#.detach()
