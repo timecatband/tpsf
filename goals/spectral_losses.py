@@ -22,7 +22,7 @@ class SpectrogramLoss(nn.Module):
         return self.loss(x, y)
     
 def compute_entropy(spectrogram):
-        power = spectrogram.abs().pow(2)
+        power = spectrogram
         probability_distribution = torch.nn.functional.softmax(power, dim=-1)
         entropy = -torch.sum(probability_distribution * torch.log(probability_distribution + 1e-8), dim=-1)  # Sum over frequency bins
         return entropy
