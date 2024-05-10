@@ -8,6 +8,7 @@ from effects.equalizers import NotchFilter
 from synth.decorator import synthd
 
 
+
 def karplus_strong_torch(wavetable, n_samples: int, decay_factor):
     samples = []
     current_sample = 0
@@ -40,7 +41,7 @@ def karplus_strong_vectorized(wavetable, n_samples, decay_factor):
     wavetable[indices] = samples
 
     return samples
-def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_line, feedbackamt):
+def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_line, feedbackamt, distortion=None):
     wavetable_size = wavetable.size(0)
     # Initialize the output tensor
     samples = torch.empty(n_samples).to(wavetable.device)
@@ -56,7 +57,10 @@ def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_
     for i in range(n_samples // wavetable_size):
         start_index = i * wavetable_size        
         # Roll the wavetable to right by one position
-        current_wavetable += feedbackamt*feedback_line[start_index:start_index + wavetable_size]        
+        
+        feedback = feedbackamt*feedback_line[start_index:start_index + wavetable_size]
+        feedback = distortion(feedback, torch.tensor([0.0]))       
+        current_wavetable += feedback
         rolled_wavetable = torch.roll(current_wavetable, shifts=1, dims=0)
         
         # Update wavetable using decayed average of current and rolled values
@@ -106,6 +110,8 @@ class KarplusSynth(nn.Module):
         self.fade_over_256 = self.fade_over_256.to(self.device)   
         self.latent_start_dim = latent_start_dim
         self.num_latents = 7      
+        # TODO Disable
+        self.distortion = SoftClipping()
         
     def forward(self, feedback_line, freq_rad: float, output_length_samples: int, h, t, pitches=None):
         latents = h[:,self.latent_start_dim:self.latent_start_dim+self.num_latents]
@@ -139,7 +145,7 @@ class KarplusSynth(nn.Module):
       #  wavetable = wavetable.detach().requires_grad_(False)
         
         feedbackamt = latents[:,3]
-        out = karplus_strong_roll_vectorized(wavetable, output_length_samples, decay, feedback_line, feedbackamt)
+        out = karplus_strong_roll_vectorized(wavetable, output_length_samples, decay, feedback_line, feedbackamt, self.distortion)
         #print("out abs sum: ", out.abs().sum())
         out[-256:] *= self.fade_over_256
        # out *= h[:,0]
