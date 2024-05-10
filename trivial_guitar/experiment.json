@@ -1,0 +1,9 @@
+{
+    "midi_file": "guitar.mid",
+    "wav_file": "guitar.wav",
+    "loudness": "loudness.npy",
+    "pitch": "pitch.npy",
+    "effect_chain": [
+        "Envelope[stages=4],"
+    ]
+}
