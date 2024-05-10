@@ -37,7 +37,7 @@ class SmallDenoisingConvolutionalAutoencoder(nn.Module):
 def extract_eq_features(waveform, num_bands=10):
     # Extract log-mel spectrogram features
     n_fft = (num_bands - 1) * 2
-    mel_specgram = torchaudio.transforms.Spectrogram(n_fft=n_fft)(waveform)
+    mel_specgram = torchaudio.transforms.Spectrogram(n_fft=n_fft, window=torch.hann_window(n_fft).to(waveform.device))(waveform)
     log_mel_specgram = torchaudio.transforms.AmplitudeToDB()(mel_specgram)
     # Downscale (interpolate) y dimension to a fixed number of frequency bands
 
