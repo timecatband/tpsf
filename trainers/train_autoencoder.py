@@ -8,7 +8,7 @@ class SmallDenoisingConvolutionalAutoencoder(nn.Module):
             # Encoder
         super(SmallDenoisingConvolutionalAutoencoder, self).__init__()
         self.encoder = nn.Sequential(
-            nn.Conv2d(2, 16, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1),  # Downsampling
             nn.ReLU(),
