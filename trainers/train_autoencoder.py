@@ -61,8 +61,8 @@ class EqFeatureAutoencoderTrainer():
             self.optimizer.zero_grad()
             # Assemble a batch from a random index
             batch = features # TODO Restore batching logic...
-            noise = torch.randn_like(batch)
-            noise_scale = random.uniform(0.0, 10.0).to(self.dev)
+            noise = torch.randn_like(batch).to(self.dev)
+            noise_scale = random.uniform(0.0, 10.0)
             
             noise = noise * noise_scale
             print("Noise max, features max", noise.abs().max().item(), batch.abs().max().item())            
