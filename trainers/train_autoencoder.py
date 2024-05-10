@@ -70,8 +70,8 @@ class EqFeatureAutoencoderTrainer():
             batch = batch
             batch = batch / batch.abs().max()
             output = self.model(batch+noise)
-            # Clamp output dim to batch dim
-            output = output[:, :batch.shape[1], :batch.shape[2], :batch.shape[3]]
+            # Clamp output dim to batch dim in dim 2
+            output = output[:,:,:batch.shape[2]]
             loss = self.criterion(output, batch)
             loss.backward()
             loss_ema = loss if loss_ema is None else 0.99 * loss_ema + 0.01 * loss
