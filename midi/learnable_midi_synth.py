@@ -3,7 +3,6 @@ import torchaudio
 import torch.nn as nn
 from effects.reverb import LearnableParametricIRReverb
 from synth.oscillator import HarmonicScaler
-from synth.oscillator import KarplusSynth
 class LearnableMidiSynth(nn.Module):
     def __init__(self, sr, synth, effect_chain, enable_time_latent = True, time_latent_size = 2):
         super().__init__()
@@ -26,7 +25,6 @@ class LearnableMidiSynth(nn.Module):
             nn.Linear(32, time_latent_size)
         )
         self.harmonic_scaler = HarmonicScaler(8, time_latent_size)
-        self.karplus_synth = KarplusSynth(sr)
       #  self.karplus_synth = torch.jit.script(self.karplus_synth)
         self.blend = nn.Parameter(torch.tensor([0.5]))
         
@@ -51,8 +49,7 @@ class LearnableMidiSynth(nn.Module):
             
             if pitch is not None:
                 pitches_in_segment = pitch[start_sample:start_sample + extended_length]
-            segment1 = self.synth(freq_rad, output_length, hamps, t, pitches=pitches_in_segment)
-            segment2 = self.karplus_synth(segment1, freq_rad, output_length, hamps, t, pitches=pitches_in_segment) 
+            segment = self.synth(None, freq_rad, output_length, hamps, t, pitches=pitches_in_segment)
            # segment1 = segment1
             #segment1 = segment1 / segment1.abs().max()
             #segment2 = segment2 / segment2.abs().max()
@@ -60,7 +57,6 @@ class LearnableMidiSynth(nn.Module):
             #print("Blend", self.blend)
          #   blend = self.blend.clamp(0.3, 0.7)
             #print("Segment 1 and 2 abs sum", torch.abs(segment1).sum(), torch.abs(segment2).sum())
-            segment = segment2
             # TODO Restore mixing segment 1
             #segment = segment2
             

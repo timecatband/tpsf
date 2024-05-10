@@ -4,6 +4,8 @@ import torchaudio
 from midi.parser import process_midi
 from midi.learnable_midi_synth import LearnableMidiSynthAsEffect
 from synth.oscillator import LearnableHarmonicSynth
+from synth.karplus import KarplusSynth
+from synth.sequence import SynthSequence
 from goals.spectral_losses import SpectrogramLoss, MultiScaleSpectrogramLoss
 from trainers.single_source_optimizer import SingleSourceOptimizer
 from effects.build_effect_chain import build_effect_chain
@@ -82,7 +84,9 @@ length = target_audio.shape[1]
 midi_events = process_midi(midi_file, sr)
 
 effect_chain = build_effect_chain(effect_chain_string)
-synth = LearnableHarmonicSynth(sr, 10)
+synth1 = LearnableHarmonicSynth(sr, 10)
+synth2 = KarplusSynth(sr)
+synth = SynthSequence(*[synth1, synth2])
 target_audio = target_audio.to(dev)
 #loss = SpectrogramLoss(sr)
 loss = MultiScaleSpectrogramLoss(sr)
