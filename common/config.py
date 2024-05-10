@@ -1,4 +1,7 @@
 import json
+import torch
+import torchaudio
+import numpy as np
 
 
 def stretch_signal(signal, stretched_size):
@@ -21,7 +24,7 @@ def parse_synth_experiment_config_from_file(experiment_dir):
     with open(file_path) as f:
         config = json.load(f)
     parsed_config = {}
-    parsed_config["midi_file"] = config["midi_file"]
+    parsed_config["midi_file"] = experiment_dir + "/" + config["midi_file"]
     parsed_config["wav_file"] = config["wav_file"]
     effect_chain_string = ""
     effects = config["effect_chain"]
@@ -33,19 +36,29 @@ def parse_synth_experiment_config_from_file(experiment_dir):
     for synth in synths:
         synth_string += synth + ","
     parsed_config["synths"] = synth_string
-    loudness_npy = config["loudness"]
-    pitch_npy = config["pitch"]
-    loudness_npy = file_path + "/" + loudness_npy
-    pitch_npy = file_path + "/" + pitch_npy
-    parsed_config["loudness"] = loudness_npy
-    parsed_config["pitch"] = pitch_npy
-    target_audio_path = file_path + "/" + config["wav_file"]
+    
+    target_audio_path = experiment_dir + "/" + config["wav_file"]
     target_audio, sr = torchaudio.load(target_audio_path)
     parsed_config["target_audio"] = target_audio
     parsed_config["sr"] = sr
+
+    if "loudness" in config:
+        loudness_npy = config["loudness"]
+        pitch_npy = config["pitch"]
+        loudness_npy = experiment_dir + "/" + loudness_npy
+        pitch_npy = experiment_dir + "/" + pitch_npy
+        loudness_npy = np.load(loudness_npy)
+        pitch_npy = np.load(pitch_npy)
+        loudness = torch.tensor(loudness_npy)
+        pitch = torch.tensor(pitch_npy)
+        loudness = stretch_signal(loudness, target_audio.shape[1])
+        pitch = stretch_signal(pitch, target_audio.shape[1])
+        parsed_config["loudness"] = loudness
+        parsed_config["pitch"] = pitch
     weights = None
     if "weights" in config:
         weights = config["weights"]
         weights = file_path + "/" + weights
     parsed_config["weights"] = weights
+    return parsed_config
     
