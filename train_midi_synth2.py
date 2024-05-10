@@ -16,11 +16,11 @@ from common.config import parse_synth_experiment_config_from_file
 from trainers.train_autoencoder import EqFeatureAutoencoderTrainer
 from trainers.train_autoencoder import AutoencoderLoss
 
-autoencoderweights = "lageguitar/lagecoder.pth"
-encoder = EqFeatureAutoencoderTrainer(256)
+#autoencoderweights = "lageguitar/lagecoder.pth"
+#encoder = EqFeatureAutoencoderTrainer(256)
 # Load weights
-encoder.model.load_state_dict(torch.load(autoencoderweights))
-aeloss = AutoencoderLoss(encoder.model)
+#encoder.model.load_state_dict(torch.load(autoencoderweights))
+#aeloss = AutoencoderLoss(encoder.model)
 
 
 dev = "cpu"
@@ -32,7 +32,7 @@ print("Using device", dev)
 dev = torch.device(dev)
 
 
-aeloss = aeloss.to(dev)
+#aeloss = aeloss.to(dev)
 
 experiments_dir = sys.argv[1]
 config = parse_synth_experiment_config_from_file(experiments_dir)
@@ -61,9 +61,11 @@ midi_events = process_midi(midi_file, sr)
 effect_chain = build_effect_chain(config["effect_chain"])
 synth = build_synth_chain(config["synths"])
 target_audio = target_audio.to(dev)
+# Mix target audio down to mono
+target_audio = target_audio[0].unsqueeze(0)
 spec_loss = SpectrogramLoss(sr)
 #loss = aeloss #MultiScaleSpectrogramLoss(sr)
-loss_wrapper = lambda x: spec_loss(x, target_audio) + aeloss(x.unsqueeze(0))
+loss_wrapper = lambda x: spec_loss(x, target_audio)# + aeloss(x.unsqueeze(0))/50.0
 
 synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events, config["harmonic_embedder"], pitch)
 synthAsEffect = synthAsEffect.to(dev)
