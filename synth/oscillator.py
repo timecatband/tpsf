@@ -49,7 +49,7 @@ class HarmonicEmbedder(nn.Module):
         )
     def forward(self, freq, time_latent, amplitude):
         print("Shapes: ", freq.shape, time_latent.shape, amplitude.shape)
-        return self.net(torch.cat((freq, time_latent, amplitude), dim=-1).unsqueeze(0))
+        return self.net(torch.cat((freq, time_latent, amplitude), dim=-1).unsqueeze(0).to(freq.device))
 
 class HarmonicEmbedderOld(nn.Module):    
     def __init__(self, num_harmonics, time_latent_size):
