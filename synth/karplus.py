@@ -50,6 +50,7 @@ def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_
     #current_wavetable.requires_grad = False
     current_wavetable = current_wavetable.detach()
    # current_wavetable.requires_grad = True
+    feedback_amt = feedbackamt.clamp(0.01,1)
 
     # Vectorized processing of the entire wavetable
     for i in range(n_samples // wavetable_size):

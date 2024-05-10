@@ -18,8 +18,8 @@ class LearnableASR(torch.nn.Module):
         t = t.clamp(0, 1)
         t_float = t.item()
         time_grid = torch.linspace(t_float, t_float+x.size(0)/44100, x.size(0)).unsqueeze(1).float().to(x.device)
-        # Reverse time grid
-        time_grid = 1 - time_grid
+        # Reverse time grid (max is not 1!)
+        time_grid = time_grid.flip(1)
     
         envelope = self.asr(time_grid)
         #envelope = envelope.clamp(0, 1)

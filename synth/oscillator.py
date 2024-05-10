@@ -141,12 +141,16 @@ class LearnableHarmonicSynth(nn.Module):
         freq_in = freq
         time = torch.linspace(t_float, t_float+output_length_samples / self.sr, output_length_samples).to(self.device)
         # TODO: Re-enable fine pitch
-      #  if pitches is not None:
+        if pitches is not None:
             # Convert pitches from hz to radians
-       #     freq = torch.tensor(pitches).to(self.device) * 2 * 3.14159
-        #    freq = freq / self.sr
-            # Pad pitches to length of time
-          #  freq = freq.unsqueeze(0).expand(output_length_samples, -1)
+            freq = torch.tensor(pitches).to(self.device) * 2 * 3.14159
+            freq = freq / self.sr
+         #    Pad pitches to length of time
+            freq = freq#.expand(output_length_samples, -1)
+            max_freq = freq.max()
+            print("freq shape and output length: ", freq.shape, output_length_samples)
+        else:
+            max_freq = freq
             
         # Pad freq with 0s to match time shape using pad
         # TODO: questionable
@@ -161,7 +165,7 @@ class LearnableHarmonicSynth(nn.Module):
         for i in range(1, self.num_harmonics):
             # Convert frequency to hz and check if it is above half the sampling rate
             # TODO: Need max when re-enabling fine pitch
-            freq_hz = freq * self.sr / (2 * 3.14159)
+            freq_hz = max_freq * self.sr / (2 * 3.14159)
 
             if freq_hz * (i+1) > self.sr / 2:
                 scale = torch.tensor([1e-4])
