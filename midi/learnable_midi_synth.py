@@ -79,7 +79,7 @@ class LearnableMidiSynthAsEffect(nn.Module):
         # TODO Turn back on!!!
         self.enable_room_reverb = True #enable_room_reverb
         if self.enable_room_reverb:
-            self.verb = LearnableParametricIRReverb(sr, sr)
+            self.verb = LearnableParametricIRReverb(int(sr/2), sr)
         self.pitch = pitch
     def forward(self, x):
         length_samples = x.shape[0]

@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from effects.dynamics import LearnableASR
 from effects.decorator import effect
-from effects.filters import LearnableLowpass
+from effects.filters import LearnableLowpass, LearnableHighpass
 
 def fft_convolve(signal, kernel):
     signal = nn.functional.pad(signal, (0, signal.shape[-1]))
@@ -36,6 +36,13 @@ class LearnableParametricIRReverb(nn.Module):
         self.smooth_fade_over_1000 = torch.linspace(1, 0.0001, 1000)
         self.one_at_length = torch.ones(length-1000).float()
         self.envelope = nn.Parameter(torch.cat((self.one_at_length, self.smooth_fade_over_1000)))
+        self.lowpass_in = LearnableHighpass(sampling_rate, 4000.0)
+        if torch.cuda.is_available():
+            self.dev = torch.device("cuda")
+        else:   
+            self.dev = torch.device("cpu")
+        self.noise_scale = nn.Parameter(torch.tensor(1.0))
+        self.blend = nn.Parameter(torch.tensor(0.5))
     def save_impulse(self, path):
         impulse = self.build_impulse().detach().squeeze(0).cpu()
         print("Impulse shape", impulse.shape)
@@ -45,7 +52,10 @@ class LearnableParametricIRReverb(nn.Module):
 
     def build_impulse(self):
         t = torch.exp(-nn.functional.softplus(-self.decay) * self.t * 500)
-        noise = self.noise * t
+        noise = t*self.noise_scale*(torch.rand(self.length)*2-1).unsqueeze(-1).to(self.dev) #self.noise * t
+        noise = self.lowpass_in(noise, torch.tensor([0.0]))*self.noise_scale
+        # TODO: Questionable 0.0
+        #noise = self.lowpass_in(noise, torch.tensor([0.0]))*self.noise_scale
         impulse = noise * torch.sigmoid(self.wet)
         impulse[:, 0] = 1
         return impulse
@@ -71,6 +81,7 @@ class LearnableParametricIRReverb(nn.Module):
 
 
     def forward(self, x, t):
+        x_in = x
         x = x.unsqueeze(0)
         lenx = x.shape[1]
         impulse = self.build_impulse()
@@ -83,7 +94,8 @@ class LearnableParametricIRReverb(nn.Module):
         
         
         x = fft_convolve(x.squeeze(-1), impulse.squeeze(-1)).unsqueeze(-1)
-        return x.squeeze(0).squeeze(-1)
+        x_out = x.squeeze(0).squeeze(-1)
+        return (self.blend * x_out + (1 - self.blend) * x_in)
 
 class IRReverb(nn.Module):
     def __init__(self, ir):

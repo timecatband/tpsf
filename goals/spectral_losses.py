@@ -4,6 +4,80 @@ import torch.nn as nn
 import random
 from PIL import Image
 import numpy as np
+from math import exp
+
+def gaussian_kernel(size, sigma):
+    """Generates a 1D Gaussian kernel."""
+    x = torch.arange(size).float() - size // 2
+    gauss = torch.exp(-x.pow(2) / (2 * sigma.pow(2)))
+    return gauss / gauss.sum()
+
+def apply_variable_gaussian_blur(spectrogram, max_sigma, decay_rate=5.0):
+    """
+    Applies a variable Gaussian blur across the frequency bins of a spectrogram.
+    max_sigma: Maximum sigma for the highest frequency bin.
+    """
+    num_bins = spectrogram.size(0)
+    blurred_spectrogram = torch.zeros_like(spectrogram)
+    decay_rate = torch.tensor(decay_rate).to(spectrogram.device)
+
+    for i in range(num_bins-1, 0, -1):
+        sigma = max_sigma * exp(-decay_rate*(i / num_bins))
+        size = int(sigma * 6)  # Kernel size, typically 6*sigma to cover 99% of the Gaussian
+        if size % 2 == 0:
+            size += 1  # Ensure kernel size is odd
+        if sigma > 0:
+            kernel = gaussian_kernel(size, sigma)
+            kernel = kernel.view(1, 1, -1).to(spectrogram.device)
+            row_blurred = torch.nn.functional.conv1d(spectrogram[i:i+1, None, :], kernel, padding=size//2)
+            blurred_spectrogram[i] = row_blurred
+        else:
+            blurred_spectrogram[i] = spectrogram[i]  # No blur if sigma is 0
+
+    return blurred_spectrogram
+
+import torch
+import torch.nn.functional as F
+
+
+def gaussian_2d_kernel(kernel_size, sigma):
+    """Generate a 2D Gaussian kernel."""
+    center = kernel_size // 2
+    x = torch.arange(kernel_size).float() - center
+    y = torch.arange(kernel_size).float() - center
+    x, y = torch.meshgrid(x, y, indexing='xy')
+    kernel = torch.exp(- (x**2 + y**2) / (2 * sigma**2))
+    kernel /= kernel.sum()
+    return kernel.view(1, 1, kernel_size, kernel_size)  # Reshape to [out_channels, in_channels, height, width]
+
+def apply_half_gaussian_blur(spectrogram, kernel_size, sigma):
+    num_bins, num_steps = spectrogram.shape
+    half_bins = num_bins // 2  # Half the frequency bins
+
+    # Gaussian kernel
+    kernel = gaussian_2d_kernel(kernel_size, sigma).to(spectrogram.device)
+
+    print("Spec shape", spectrogram.shape)
+    # Prepare for convolution
+    top_half = spectrogram[half_bins:].unsqueeze(1)  # Get the top half and add channel dimension
+    bottom_half = spectrogram[:half_bins]  # Bottom half remains unchanged
+
+    # Apply Gaussian blur to the top half
+    padding = kernel_size // 2
+    print("top half shape", top_half.shape)
+    top_half = top_half.permute((1,0,2))
+    blurred_top_half = F.conv2d(top_half, kernel, padding=padding)
+    blurred_top_half = blurred_top_half.squeeze(0).squeeze(0)  # Remove channel dimension
+
+    # Concatenate back the blurred top half with the unblurred bottom half
+    print("Blurred top half shape", blurred_top_half.shape)
+    print("Bottom half shape", bottom_half.shape)
+    # TODO Double weighting the blurry section is probably a bad idea but interesting...
+    blurred_spectrogram = torch.cat((bottom_half, blurred_top_half), dim=0)# blurred_top_half), dim=0)
+
+    return blurred_spectrogram
+
+
 
 class SpectrogramLoss(nn.Module):
     def __init__(self, sr):
@@ -45,27 +119,27 @@ class MultiScaleSpectrogramLoss(nn.Module):
             self.loss_fn = nn.MSELoss()
         else:
             raise ValueError(f"Unsupported loss type: {self.loss_type}")
-        self.mse = nn.MSELoss(reduction='none')
+        self.mse = nn.L1Loss(reduction='none')
 
         # Create multiple spectrogram transforms
-        self.spectrograms = nn.ModuleList([
-            torchaudio.transforms.MelSpectrogram(
-                sample_rate=sample_rate,
-                n_fft=n_fft,
-                n_mels=n_fft // 2,
-                hop_length=n_fft // 2,
-           ) for n_fft in self.n_fft_sizes
-        ])
-      #  self.spectrograms = nn.ModuleList([
-     #       torchaudio.transforms.Spectrogram(
+    #    self.spectrograms = nn.ModuleList([
+     #       torchaudio.transforms.MelSpectrogram(
+      #          sample_rate=sample_rate,
        #         n_fft=n_fft,
-        #        win_length=n_fft,  # You can adjust this if needed
+        #        n_mels=n_fft // 2,
          #       hop_length=n_fft // 2,
-          #      window_fn=torch.hamming_window,
-           #     power=2,  # Use power spectrogram
-            #    normalized=False
-            #) for n_fft in self.n_fft_sizes
+          # ) for n_fft in self.n_fft_sizes
         #])
+        self.spectrograms = nn.ModuleList([
+            torchaudio.transforms.Spectrogram(
+                n_fft=n_fft,
+                win_length=n_fft,  # You can adjust this if needed
+                hop_length=n_fft // 2,
+                window_fn=torch.hamming_window,
+                power=2,  # Use power spectrogram
+                normalized=False
+            ) for n_fft in self.n_fft_sizes
+        ])
         # Manage device
         if torch.cuda.is_available():
             self.device = torch.device("cuda")
@@ -82,7 +156,11 @@ class MultiScaleSpectrogramLoss(nn.Module):
                 # Normalize with dB
                 x_spec = torchaudio.transforms.AmplitudeToDB()(x_spec)
                 y_spec = torchaudio.transforms.AmplitudeToDB()(y_spec)
+                
                 y_spec = y_spec[0]
+                max_sigma = torch.tensor(5.0).to(self.device)
+                x_spec = apply_half_gaussian_blur(x_spec, 11, 3)
+                y_spec = apply_half_gaussian_blur(y_spec, 11, 3)
                 print("x_spec shape", x_spec.shape)
                 print("y_spec shape", y_spec.shape)
 
@@ -92,6 +170,7 @@ class MultiScaleSpectrogramLoss(nn.Module):
                 # Compute entropy
                 x_entropy = compute_entropy(x_spec)
                 y_entropy = compute_entropy(y_spec)
+                # TODO This is currently really L1...maybe go back doenst seem great
                 entropy_loss = self.mse(x_entropy, y_entropy)
 
                 # Compute weights based on target entropy
@@ -113,7 +192,7 @@ class MultiScaleSpectrogramLoss(nn.Module):
                 # Sum losses from all spectrograms
                 total_loss += combined_loss
                 # Every 100 losses (random) dump both spectrograms as images
-                if random.randint(0, 10) == 5:
+                if random.randint(0, 5) == 3:
                     x_spec = x_spec.detach().cpu().numpy()
                     y_spec = y_spec.detach().cpu().numpy()
                     x_spec = x_spec/np.max(x_spec)
