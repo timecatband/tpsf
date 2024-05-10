@@ -289,6 +289,10 @@ class KarplusSynth(nn.Module):
         self.highpass = LearnableHighpass(sr, 20.0)
         self.fade_over_256 = torch.linspace(1, 0, 256)
         self.distortion = SoftClipping()
+        if torch.cuda is not None and torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        else:
+            self.device = torch.device("cpu")
     def forward(self, feedback_line, freq_rad: float, output_length_samples: int, h, t, pitches=None):
         latents = self.hamps_to_decay(h)
         decay = latents[:,0]#self.decay.clamp(0.99, 0.99999)
@@ -301,7 +305,7 @@ class KarplusSynth(nn.Module):
         freq = freq_rad * self.sr / (2 * 3.14159)
         wavetable_size = int(self.sr // freq)
       #  wavetable = 2 * torch.randint(0, 2, (wavetable_size,), dtype=torch.float32) - 1        
-        wavetable = 2*torch.rand(wavetable_size) - 1
+        wavetable = 2*torch.rand(wavetable_size).to(self.device) - 1
         wavetable = wavetable
         lowpass_freq = latents[:,1]*self.sr/4
         lowpass_q = latents[:,2]
