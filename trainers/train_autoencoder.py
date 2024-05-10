@@ -54,6 +54,7 @@ class EqFeatureAutoencoderTrainer():
             self.dev = torch.device("cuda")
         else:
             self.dev = torch.device("cpu")
+        self.model = self.model.to(self.dev)
     def train(self, waveform, num_steps=1000, batch_size_samples=32768):
         features = extract_eq_features(waveform, self.num_bands).to(self.dev)
         loss_ema = None
