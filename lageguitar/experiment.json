@@ -3,7 +3,7 @@
     "wav_file": "lageguitar.wav",
     "loudness": "loudness.npy",
     "pitch": "pitch.npy",
-    "latent_size": 13,
+    "latent_size": 15,
     "synths": [
         "HarmonicSynth[sr=44100,num_harmonics=8]",
         "KarplusSynth[sr=44100,latent_start_dim=8]"
@@ -11,6 +11,8 @@
     "effect_chain": [
         "Gain",
         "Envelope[stages=4],",
+        "ParametricIRReverb[length=2048,sampling_rate=44100],",
+        "SoftClipping,",
         "Exciter[sample_rate=44100]"
     ]
 }

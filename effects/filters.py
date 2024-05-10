@@ -72,3 +72,26 @@ class LearnableHighpass(nn.Module):
         )
 
         return out
+
+@effect("Bandreject")
+class LearnableBandreject(nn.Module):
+    def __init__(self, sample_rate, initial_freq=4000.0):
+        super().__init__()
+        self.sample_rate = sample_rate
+
+        # Filter components
+    
+        self.filter_freq = nn.Parameter(torch.tensor([initial_freq]))
+        self.filter_q = nn.Parameter(torch.tensor([0.1]))
+        self.blend = nn.Parameter(torch.tensor([0.5]))
+
+    def forward(self, x: torch.Tensor, t: torch.Tensor):
+        filter_freq = self.filter_freq.clamp(100, self.sample_rate / 2 - 1)
+        filter_q = self.filter_q.clamp(0.1, 10)
+        out = torchaudio.functional.bandreject_biquad(
+            x,
+            self.sample_rate,    # Sample rate
+            filter_freq, filter_q
+        )
+
+        return (1-self.blend)*out + self.blend*x

@@ -3,12 +3,14 @@
     "wav_file": "jerryguitar.wav",
     "loudness": "loudness.npy",
     "pitch": "pitch.npy",
+    "latent_size": 15,
     "synths": [
-        "HarmonicSynth[sr=44100,num_harmonics=7]",
-        "KarplusSynth[sr=44100]"
-    ],
+        "HarmonicSynth[sr=44100,num_harmonics=8]",
+        "KarplusSynth[sr=44100,latent_start_dim=8]"
+    ],    
     "effect_chain": [
         "Envelope[stages=4],",
+        "BandReject[sample_rate=44100],"
         "SoftClipping,",
         "Lowpass[sample_rate=44100],"
     ]

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from effects.dynamics import LearnableASR
 from effects.distortion import SoftClipping
-from effects.filters import LearnableLowpass, LearnableHighpass
+from effects.filters import LearnableLowpass, LearnableHighpass, LearnableBandreject
 import torchaudio
 from effects.equalizers import NotchFilter
 from synth.decorator import synthd
@@ -105,7 +105,8 @@ class KarplusSynth(nn.Module):
             self.device = torch.device("cpu")
         self.fade_over_256 = self.fade_over_256.to(self.device)   
         self.latent_start_dim = latent_start_dim
-        self.num_latents = 5         
+        self.num_latents = 7      
+        
     def forward(self, feedback_line, freq_rad: float, output_length_samples: int, h, t, pitches=None):
         latents = h[:,self.latent_start_dim:self.latent_start_dim+self.num_latents]
         decay = latents[:,0]#self.decay.clamp(0.99, 0.99999)
@@ -143,4 +144,9 @@ class KarplusSynth(nn.Module):
         out[-256:] *= self.fade_over_256
        # out *= h[:,0]
         #return out
+        bandpass_freq = latents[:,5]*self.sr/4
+        bandpass_freq = bandpass_freq.clamp(100, self.sr / 2 - 1)
+        bandpass_q = latents[:,6]
+        bandpass_q = bandpass_q.clamp(0.1, 0.999)
+        out = torchaudio.functional.bandreject_biquad(out, self.sr, bandpass_freq, bandpass_q)
         return self.envelope(out,t)*latents[:,4]

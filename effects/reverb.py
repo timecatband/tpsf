@@ -16,7 +16,7 @@ def fft_convolve(signal, kernel):
 
 @effect("ParametricIRReverb")
 class LearnableParametricIRReverb(nn.Module):
-    def __init__(self, length, sampling_rate, initial_wet=0.3, initial_decay=5):
+    def __init__(self, length=2048, sampling_rate=44100, initial_wet=0.3, initial_decay=5):
         super().__init__()
         self.length = length
         self.sampling_rate = sampling_rate

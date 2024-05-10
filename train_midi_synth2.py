@@ -63,9 +63,9 @@ synth = build_synth_chain(config["synths"])
 target_audio = target_audio.to(dev)
 # Mix target audio down to mono
 target_audio = target_audio[0].unsqueeze(0)
-spec_loss = SpectrogramLoss(sr)
-#loss = aeloss #MultiScaleSpectrogramLoss(sr)
-loss_wrapper = lambda x: spec_loss(x, target_audio)# + aeloss(x.unsqueeze(0))/50.0
+#spec_loss = SpectrogramLoss(sr)
+loss = MultiScaleSpectrogramLoss(sr)
+loss_wrapper = lambda x: loss(x, target_audio)# + aeloss(x.unsqueeze(0))/50.0
 
 synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events, config["harmonic_embedder"], pitch)
 synthAsEffect = synthAsEffect.to(dev)

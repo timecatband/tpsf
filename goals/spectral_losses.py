@@ -48,24 +48,24 @@ class MultiScaleSpectrogramLoss(nn.Module):
         self.mse = nn.MSELoss(reduction='none')
 
         # Create multiple spectrogram transforms
-     #   self.spectrograms = nn.ModuleList([
-      #      torchaudio.transforms.MelSpectrogram(
-       #         sample_rate=sample_rate,
-        #        n_fft=n_fft,
-         #       n_mels=n_fft // 2,
-          #      hop_length=n_fft // 2,
-           ##) for n_fft in self.n_fft_sizes
-        #])
         self.spectrograms = nn.ModuleList([
-            torchaudio.transforms.Spectrogram(
+            torchaudio.transforms.MelSpectrogram(
+                sample_rate=sample_rate,
                 n_fft=n_fft,
-                win_length=n_fft,  # You can adjust this if needed
+                n_mels=n_fft // 2,
                 hop_length=n_fft // 2,
-                window_fn=torch.hamming_window,
-                power=2,  # Use power spectrogram
-                normalized=False
-            ) for n_fft in self.n_fft_sizes
+           ) for n_fft in self.n_fft_sizes
         ])
+      #  self.spectrograms = nn.ModuleList([
+     #       torchaudio.transforms.Spectrogram(
+       #         n_fft=n_fft,
+        #        win_length=n_fft,  # You can adjust this if needed
+         #       hop_length=n_fft // 2,
+          #      window_fn=torch.hamming_window,
+           #     power=2,  # Use power spectrogram
+            #    normalized=False
+            #) for n_fft in self.n_fft_sizes
+        #])
         # Manage device
         if torch.cuda.is_available():
             self.device = torch.device("cuda")
@@ -113,7 +113,7 @@ class MultiScaleSpectrogramLoss(nn.Module):
                 # Sum losses from all spectrograms
                 total_loss += combined_loss
                 # Every 100 losses (random) dump both spectrograms as images
-                if random.randint(0, 100) == 0:
+                if random.randint(0, 10) == 5:
                     x_spec = x_spec.detach().cpu().numpy()
                     y_spec = y_spec.detach().cpu().numpy()
                     x_spec = x_spec/np.max(x_spec)
