@@ -5,7 +5,7 @@ import torchaudio
 from trainers.train_autoencoder import EqFeatureAutoencoderTrainer
 
 audio_file, sr = torchaudio.load(sys.argv[1])
-
+audio_file = audio_file[0].unsqueeze(0)
 autoencoder = EqFeatureAutoencoderTrainer(256)
 autoencoder.train(audio_file)
 
