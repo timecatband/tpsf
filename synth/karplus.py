@@ -79,7 +79,7 @@ def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_
 
 @synthd("KarplusSynth")
 class KarplusSynth(nn.Module):
-    def __init__(self, sr):
+    def __init__(self, sr, latent_start_dim=0):
         super(KarplusSynth, self).__init__()
         self.sr = sr
         self.buffer = torch.zeros(sr)
@@ -103,9 +103,11 @@ class KarplusSynth(nn.Module):
             self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
-        self.fade_over_256 = self.fade_over_256.to(self.device)            
+        self.fade_over_256 = self.fade_over_256.to(self.device)   
+        self.latent_start_dim = latent_start_dim
+        self.num_latents = 5         
     def forward(self, feedback_line, freq_rad: float, output_length_samples: int, h, t, pitches=None):
-        latents = self.hamps_to_decay(h)
+        latents = h[:,self.latent_start_dim:self.latent_start_dim+self.num_latents]
         decay = latents[:,0]#self.decay.clamp(0.99, 0.99999)
         #decay = self.decay
         #print("Decay: ", decay)

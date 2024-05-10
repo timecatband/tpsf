@@ -2,9 +2,8 @@ import torch
 import torchaudio
 import torch.nn as nn
 from effects.reverb import LearnableParametricIRReverb
-from synth.oscillator import HarmonicScaler
 class LearnableMidiSynth(nn.Module):
-    def __init__(self, sr, synth, effect_chain, enable_time_latent = True, time_latent_size = 2):
+    def __init__(self, sr, synth, effect_chain, latent_embedder, enable_time_latent = True, time_latent_size = 2):
         super().__init__()
         self.synth = synth
         self.effect_chain = effect_chain
@@ -24,7 +23,7 @@ class LearnableMidiSynth(nn.Module):
             nn.ReLU(),
             nn.Linear(32, time_latent_size)
         )
-        self.harmonic_scaler = HarmonicScaler(8, time_latent_size)
+        self.harmonic_embedder = latent_embedder
       #  self.karplus_synth = torch.jit.script(self.karplus_synth)
         self.blend = nn.Parameter(torch.tensor([0.5]))
         
@@ -45,7 +44,7 @@ class LearnableMidiSynth(nn.Module):
             if self.enable_time_latent:
                 time_latent = self.time_embedder(torch.tensor([normalized_global_t_start]).to(self.device).unsqueeze(0)).squeeze(0)
             velocity = velocity / 127.0
-            hamps = self.harmonic_scaler(torch.tensor([freq_rad]), time_latent, torch.tensor([velocity]))
+            hamps = self.harmonic_embedder(torch.tensor([freq_rad]), time_latent, torch.tensor([velocity]))
             
             if pitch is not None:
                 pitches_in_segment = pitch[start_sample:start_sample + extended_length]
@@ -73,9 +72,9 @@ class LearnableMidiSynth(nn.Module):
         return output
 
 class LearnableMidiSynthAsEffect(nn.Module):
-    def __init__(self, sr, synth, effect_chain, note_events, pitch = None, enable_room_reverb = True):
+    def __init__(self, sr, synth, effect_chain, note_events, latent_embedder,  pitch = None, enable_room_reverb = True):
         super().__init__()
-        self.lms = LearnableMidiSynth(sr, synth, effect_chain)
+        self.lms = LearnableMidiSynth(sr, synth, effect_chain, latent_embedder)
         self.note_events = note_events
         # TODO Turn back on!!!
         self.enable_room_reverb = True #enable_room_reverb

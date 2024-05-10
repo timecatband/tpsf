@@ -54,7 +54,7 @@ target_audio = target_audio.to(dev)
 loss = MultiScaleSpectrogramLoss(sr)
 loss_wrapper = lambda x: loss(x, target_audio)
 
-synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events, pitch)
+synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events, config["harmonic_embedder"], pitch)
 synthAsEffect = synthAsEffect.to(dev)
 if weights is not None:
     print("Loading weights", weights)

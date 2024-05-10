@@ -2,6 +2,7 @@ import json
 import torch
 import torchaudio
 import numpy as np
+from synth.oscillator import HarmonicEmbedder
 
 
 def stretch_signal(signal, stretched_size):
@@ -19,11 +20,25 @@ def stretch_signal(signal, stretched_size):
     return stretched_signal
 
 def parse_synth_experiment_config_from_file(experiment_dir):
+    defaults={}
+    defaults["time_latent_size"] = 2
+    defaults["latent_size"] = 8
+    
+    
     config = None
+    
     file_path = experiment_dir + "/experiment.json"
     with open(file_path) as f:
         config = json.load(f)
     parsed_config = {}
+    # Merge defaults with config
+    for key in defaults:
+        if key not in config:
+            config[key] = defaults[key]
+    parsed_config["latent_size"] = config["latent_size"]
+    parsed_config["time_latent_size"] = config["time_latent_size"]
+    parsed_config["harmonic_embedder"] = HarmonicEmbedder(config["latent_size"], config["time_latent_size"])
+    
     parsed_config["midi_file"] = experiment_dir + "/" + config["midi_file"]
     parsed_config["wav_file"] = config["wav_file"]
     effect_chain_string = ""

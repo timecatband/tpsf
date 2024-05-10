@@ -37,9 +37,23 @@ class LearnableSineOscillator(nn.Module):
         freq_hz = self.freq_rad * self.sr / (2 * 3.14159)
         print("freq_hz: ", freq_hz)
         
-class HarmonicScaler(nn.Module):    
+class HarmonicEmbedder(nn.Module):
+    def __init__(self, latent_size, time_latent_size, hidden_size=64):
+        super(HarmonicEmbedder, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(time_latent_size+2, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, latent_size)
+        )
+    def forward(self, freq, time_latent, amplitude):
+        print("Shapes: ", freq.shape, time_latent.shape, amplitude.shape)
+        return self.net(torch.cat((freq, time_latent, amplitude), dim=-1).unsqueeze(0))
+
+class HarmonicEmbedderOld(nn.Module):    
     def __init__(self, num_harmonics, time_latent_size):
-        super(HarmonicScaler, self).__init__()
+        super(HarmonicEmbedder, self).__init__()
         self.scale_harmonic_amps_by_freq = nn.Sequential(
             nn.Linear(1, 32),
             nn.ReLU(),
@@ -101,7 +115,7 @@ def generate_sawtooth_wave(frequency, num_samples, sampling_rate=44100):
 
 @synthd("HarmonicSynth")
 class LearnableHarmonicSynth(nn.Module):
-    def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True, time_latent_size=2):
+    def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True, time_latent_size=2, enable_inharmonics=True, harmonic_start_dim=0):
         super(LearnableHarmonicSynth, self).__init__()
         self.sr = sr
         self.gain = nn.Parameter(torch.tensor(1.0))
@@ -116,8 +130,7 @@ class LearnableHarmonicSynth(nn.Module):
             self.device = torch.device("cpu")
             
         print("Num harmonics: ", num_harmonics)
-        # TODO Weird hack
-        num_harmonics = 8
+        
         self.num_harmonics = num_harmonics
         self.static_detune = nn.Parameter(torch.tensor(0.0))
         # Rescale harmonic amplitudes to decay
@@ -133,6 +146,10 @@ class LearnableHarmonicSynth(nn.Module):
         self.inharmonic_envelope = LearnableASR(3)
         self.sawtooth_envelope = LearnableASR(3)
         self.inharmonic_distortion = SoftClipping()
+        self.enable_inharmonics = enable_inharmonics
+        
+        # Start dim of harmonics in latent input
+        self.harmonic_start_dim = harmonic_start_dim
         
     # TODO Modify this to accept amplitude latent
     def forward(self, feedback_line, freq, output_length_samples, hamps, t, pitches=None):
@@ -140,6 +157,8 @@ class LearnableHarmonicSynth(nn.Module):
         t_float = t.float().item()
         freq_in = freq
         time = torch.linspace(t_float, t_float+output_length_samples / self.sr, output_length_samples).to(self.device)
+        #if self.harmonic_start_dim > 0:
+        hamps = hamps[:,self.harmonic_start_dim:self.harmonic_start_dim+self.num_harmonics+1]
         # TODO: Re-enable fine pitch
         if pitches is not None:
             # Convert pitches from hz to radians
@@ -174,22 +193,22 @@ class LearnableHarmonicSynth(nn.Module):
         
         starting_freq_tensor = torch.tensor([freq_in]).to(self.device).unsqueeze(0)
         freq_and_hamps = torch.cat((starting_freq_tensor, hamps), dim=-1)
-        partials = self.map_harmonic_amplitudes_and_freq_to_inharmonic_partials(freq_and_hamps)
-        partials_wf = torch.zeros_like(time)
-       # print("Partials: ", partials)
-        for i in range(self.num_partials):
-            partial_freq = partials[:,i]*10 * freq_in
-            partial_freq_hz = partial_freq * self.sr / (2 * 3.14159)
-            scale = partials[:,self.num_partials+i]
-            if partial_freq_hz > self.sr / 2:
-                scale = torch.tensor([1e-4])
+        
+        if (self.enable_inharmonics):
+            partials = self.map_harmonic_amplitudes_and_freq_to_inharmonic_partials(freq_and_hamps)
+            partials_wf = torch.zeros_like(time)
+        # print("Partials: ", partials)
+            for i in range(self.num_partials):
+                partial_freq = partials[:,i]*10 * freq_in
+                partial_freq_hz = partial_freq * self.sr / (2 * 3.14159)
+                scale = partials[:,self.num_partials+i]
+                if partial_freq_hz > self.sr / 2:
+                    scale = torch.tensor([1e-4])
             
             
-            partials_wf += scale*torch.sin(partial_freq * time * self.sr)
-        #partials_wf = self.inharmonic_distortion(partials_wf,t)
-        partials = partials / 8
-        # TODO Restore partials
-        #waveform += self.inharmonic_envelope(partials_wf, t)
+                partials_wf += scale*torch.sin(partial_freq * time * self.sr)
+            partials = partials / 8
+            waveform += self.inharmonic_envelope(partials_wf, t)
       #  print("Partials: ", partials)
         # TODO...maybe this is bad
        # waveform = waveform / waveform.abs().max()

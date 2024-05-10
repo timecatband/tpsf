@@ -1,8 +1,6 @@
 {
     "midi_file": "upright.mid",
     "wav_file": "upright.wav",
-    "loudness": "loudness.npy",
-    "pitch": "pitch.npy",
     "synths": [
         "HarmonicSynth[sr=44100,num_harmonics=8]",
         "KarplusSynth[sr=44100]"
