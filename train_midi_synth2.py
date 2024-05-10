@@ -5,7 +5,7 @@ from midi.parser import process_midi
 from midi.learnable_midi_synth import LearnableMidiSynthAsEffect
 from synth.oscillator import LearnableHarmonicSynth
 from synth.karplus import KarplusSynth
-from synth.sequence import SynthSequence
+from synth.sequence import SynthSequence, build_synth_chain
 from goals.spectral_losses import SpectrogramLoss, MultiScaleSpectrogramLoss
 from trainers.single_source_optimizer import SingleSourceOptimizer
 from effects.build_effect_chain import build_effect_chain
@@ -46,6 +46,11 @@ effects = config["effect_chain"]
 effect_chain_string = ""
 for effect in effects:
     effect_chain_string += effect + ","
+synths = config["synths"]
+synth_string = ""
+for synth in synths:
+    synth_string += synth + ","
+    
 
 loudness_npy = config["loudness"]
 pitch_npy = config["pitch"]
@@ -57,8 +62,6 @@ loudness = torch.tensor(loudness)
 pitch = torch.tensor(pitch)
 print("loudness shape", loudness.shape)
 print("pitch shape", pitch.shape)
-
-
 
 
 wav_file = experiments_dir + "/" + wav_file
@@ -84,9 +87,7 @@ length = target_audio.shape[1]
 midi_events = process_midi(midi_file, sr)
 
 effect_chain = build_effect_chain(effect_chain_string)
-synth1 = LearnableHarmonicSynth(sr, 10)
-synth2 = KarplusSynth(sr)
-synth = SynthSequence(*[synth1, synth2])
+synth = build_synth_chain(synth_string)
 target_audio = target_audio.to(dev)
 #loss = SpectrogramLoss(sr)
 loss = MultiScaleSpectrogramLoss(sr)

@@ -5,7 +5,7 @@ from effects.distortion import SoftClipping
 from effects.filters import LearnableLowpass, LearnableHighpass
 import torchaudio
 from effects.equalizers import NotchFilter
-
+from synth.decorator import synthd
 
 
 def karplus_strong_torch(wavetable, n_samples: int, decay_factor):
@@ -76,6 +76,7 @@ def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_
     return samples
 
 
+@synthd("KarplusSynth")
 class KarplusSynth(nn.Module):
     def __init__(self, sr):
         super(KarplusSynth, self).__init__()

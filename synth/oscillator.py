@@ -6,7 +6,7 @@ from effects.distortion import SoftClipping
 from effects.filters import LearnableLowpass, LearnableHighpass
 import torchaudio
 from effects.equalizers import NotchFilter
-
+from synth.decorator import synthd
 
 class LearnableSineOscillator(nn.Module):
     def __init__(self, freq_rad, sr):
@@ -98,7 +98,8 @@ def generate_sawtooth_wave(frequency, num_samples, sampling_rate=44100):
 
     return waveform
 
-        
+
+@synthd("HarmonicSynth")
 class LearnableHarmonicSynth(nn.Module):
     def __init__(self, sr, num_harmonics, enable_amplitude_scaling=True, time_latent_size=2):
         super(LearnableHarmonicSynth, self).__init__()
