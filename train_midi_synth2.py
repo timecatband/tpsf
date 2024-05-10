@@ -13,6 +13,14 @@ import sys
 import json
 import numpy as np
 from common.config import parse_synth_experiment_config_from_file
+from trainers.train_autoencoder import EqFeatureAutoencoderTrainer
+from trainers.train_autoencoder import AutoencoderLoss
+
+autoencoderweights = "lageguitar/lagecoder.pth"
+encoder = EqFeatureAutoencoderTrainer(256)
+# Load weights
+encoder.model.load_state_dict(torch.load(autoencoderweights))
+aeloss = AutoencoderLoss(encoder.model)
 
 
 dev = "cpu"
@@ -50,9 +58,10 @@ midi_events = process_midi(midi_file, sr)
 effect_chain = build_effect_chain(config["effect_chain"])
 synth = build_synth_chain(config["synths"])
 target_audio = target_audio.to(dev)
-#loss = SpectrogramLoss(sr)
-loss = MultiScaleSpectrogramLoss(sr)
-loss_wrapper = lambda x: loss(x, target_audio)
+spec_loss = SpectrogramLoss(sr)
+#loss = aeloss #MultiScaleSpectrogramLoss(sr)
+loss_wrapper = lambda x: loss(x, target_audio) + aeloss
+loss_wrapper = loss
 
 synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events, config["harmonic_embedder"], pitch)
 synthAsEffect = synthAsEffect.to(dev)
