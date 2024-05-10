@@ -1,8 +1,51 @@
 import json
 
 
-def parse_synth_experiment_config_from_file(file_path):
+def stretch_signal(signal, stretched_size):
+    stretched_samples_per_original_sample = stretched_size / signal.shape[0]
+    stretched_components = []
+    for i in range(signal.shape[0]):
+        # Repeat signal i by stretched_samples_per_original_sample times
+        stretched_sample = signal[i].repeat(int(stretched_samples_per_original_sample))
+        # Mix in the next sample
+        if i + 1 < signal.shape[0]:
+            blend = torch.linspace(1, 1/stretched_samples_per_original_sample, int(stretched_samples_per_original_sample))
+            stretched_sample = stretched_sample * blend + signal[i + 1] * (1 - blend)
+        stretched_components.append(stretched_sample)
+    stretched_signal = torch.cat(stretched_components)
+    return stretched_signal
+
+def parse_synth_experiment_config_from_file(experiment_dir):
     config = None
+    file_path = experiment_dir + "/experiment.json"
     with open(file_path) as f:
         config = json.load(f)
+    parsed_config = {}
+    parsed_config["midi_file"] = config["midi_file"]
+    parsed_config["wav_file"] = config["wav_file"]
+    effect_chain_string = ""
+    effects = config["effect_chain"]
+    for effect in effects:
+        effect_chain_string += effect + ","
+    parsed_config["effect_chain"] = effect_chain_string
+    synth_string = ""
+    synths = config["synths"]
+    for synth in synths:
+        synth_string += synth + ","
+    parsed_config["synths"] = synth_string
+    loudness_npy = config["loudness"]
+    pitch_npy = config["pitch"]
+    loudness_npy = file_path + "/" + loudness_npy
+    pitch_npy = file_path + "/" + pitch_npy
+    parsed_config["loudness"] = loudness_npy
+    parsed_config["pitch"] = pitch_npy
+    target_audio_path = file_path + "/" + config["wav_file"]
+    target_audio, sr = torchaudio.load(target_audio_path)
+    parsed_config["target_audio"] = target_audio
+    parsed_config["sr"] = sr
+    weights = None
+    if "weights" in config:
+        weights = config["weights"]
+        weights = file_path + "/" + weights
+    parsed_config["weights"] = weights
     
