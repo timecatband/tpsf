@@ -158,7 +158,6 @@ class LearnableHarmonicSynth(nn.Module):
         t_float = t.float().item()
         freq_in = freq
         time = torch.linspace(t_float, t_float+output_length_samples / self.sr, output_length_samples).to(self.device)
-        #if self.harmonic_start_dim > 0:
         hamps = hamps[:,self.harmonic_start_dim:self.harmonic_start_dim+self.num_harmonics+1]
         # TODO: Re-enable fine pitch
         if pitches is not None:

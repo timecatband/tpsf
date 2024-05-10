@@ -4,7 +4,7 @@
     "loudness": "loudness.npy",
     "pitch": "pitch.npy",
     "synths": [
-        "HarmonicSynth[sr=44100,num_harmonics=8]",
+        "HarmonicSynth[sr=44100,num_harmonics=7]",
         "KarplusSynth[sr=44100]"
     ],
     "effect_chain": [
