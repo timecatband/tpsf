@@ -48,8 +48,6 @@ class HarmonicEmbedder(nn.Module):
             nn.Linear(hidden_size, latent_size)
         )
     def forward(self, freq, time_latent, amplitude):
-        print("Shapes: ", freq.shape, time_latent.shape, amplitude.shape)
-        print("Devices: ", freq.device, time_latent.device, amplitude.device)
         freq = freq.to(time_latent.device)
         amplitude = amplitude.to(time_latent.device)
         return self.net(torch.cat((freq, time_latent, amplitude), dim=-1).unsqueeze(0).to(freq.device))
