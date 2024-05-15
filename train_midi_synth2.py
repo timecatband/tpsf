@@ -6,7 +6,7 @@ from midi.learnable_midi_synth import LearnableMidiSynthAsEffect
 from synth.oscillator import LearnableHarmonicSynth
 from synth.karplus import KarplusSynth
 from synth.sequence import SynthSequence, build_synth_chain
-from goals.spectral_losses import SpectrogramLoss, MultiScaleSpectrogramLoss
+from goals.spectral_losses import SpectrogramLoss, MultiScaleSpectrogramLoss, NoisySpectrogramLoss, LowpassSpectrogramLoss
 from trainers.single_source_optimizer import SingleSourceOptimizer
 from effects.build_effect_chain import build_effect_chain
 import sys
@@ -46,11 +46,15 @@ if "weights" in config:
 else:
     print("No weights specified in config")
 
-loudness = config["loudness"]
-pitch = config["pitch"]
+loudness = pitch = None
+if "loudness" in config:
+    loudness = config["loudness"]
+if "pitch" in config:
+    pitch = config["pitch"]
 if loudness is not None and pitch is not None:
     print ("Rescaled loudness shape", loudness.shape)
     print ("Rescaled pitch shape", pitch.shape)
+#loudness = pitch = None
 
 # Stretch loudness and pitch to match target audio length
 length = target_audio.shape[1]
@@ -65,6 +69,7 @@ target_audio = target_audio.to(dev)
 target_audio = target_audio[0].unsqueeze(0)
 #spec_loss = SpectrogramLoss(sr)
 loss = MultiScaleSpectrogramLoss(sr)
+#loss = LowpassSpectrogramLoss(sr)
 loss_wrapper = lambda x: loss(x, target_audio)# + aeloss(x.unsqueeze(0))/50.0
 
 synthAsEffect = LearnableMidiSynthAsEffect(sr, synth, effect_chain, midi_events, config["harmonic_embedder"], pitch)

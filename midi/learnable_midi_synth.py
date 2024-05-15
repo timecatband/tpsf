@@ -2,6 +2,18 @@ import torch
 import torchaudio
 import torch.nn as nn
 from effects.reverb import LearnableParametricIRReverb
+
+class TimeDistortionField(nn.Module):
+    def __init__(self, hidden_size):
+        super().__init__()
+        self.distort_time = nn.Sequential(
+            nn.Linear(1, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 1)
+        )
+    def forward(self, t):
+        return self.distort_time(t)
+
 class LearnableMidiSynth(nn.Module):
     def __init__(self, sr, synth, effect_chain, latent_embedder, enable_time_latent = True, time_latent_size = 2):
         super().__init__()
@@ -26,6 +38,7 @@ class LearnableMidiSynth(nn.Module):
         self.harmonic_embedder = latent_embedder
       #  self.karplus_synth = torch.jit.script(self.karplus_synth)
         self.blend = nn.Parameter(torch.tensor([0.5]))
+        self.time_distortion = TimeDistortionField(64)
         
     def forward(self, note_events, output, t, pitch=None):
         duration_samples = output.shape[0] #+ self.window_length
@@ -46,6 +59,7 @@ class LearnableMidiSynth(nn.Module):
             velocity = velocity / 127.0
             hamps = self.harmonic_embedder(torch.tensor([freq_rad]), time_latent, torch.tensor([velocity]))
             
+            pitches_in_segment = None
             if pitch is not None:
                 pitches_in_segment = pitch[start_sample:start_sample + extended_length]
             segment = self.synth(None, freq_rad, output_length, hamps, t, pitches=pitches_in_segment)
@@ -68,7 +82,17 @@ class LearnableMidiSynth(nn.Module):
                 output_length = duration_samples - start_sample
            # print("Segment shape", segment.shape)
            # print("Start sample + output length", output_length)
-            output[start_sample:start_sample + output_length] += segment
+            # TODO Maybe just messes everything up
+            start_sample_t = start_sample / float(duration_samples)
+            d_t = self.time_distortion(torch.tensor([start_sample_t]).to(self.device))
+            d_t = d_t/100.0
+            d_t = d_t.clamp(-0.01, 0.01)
+            d_t = d_t + start_sample_t
+            start_sample = int(d_t * duration_samples)
+            if start_sample + output_length >= duration_samples:
+                output_length = duration_samples - start_sample
+            
+            output[start_sample:start_sample + output_length] += segment[:output_length]
         return output
 
 class LearnableMidiSynthAsEffect(nn.Module):

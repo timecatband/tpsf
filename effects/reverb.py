@@ -86,7 +86,6 @@ class LearnableParametricIRReverb(nn.Module):
         lenx = x.shape[1]
         impulse = self.build_impulse()
         #impulse = self.apply_frequency_response(impulse)
-        print('impulse shape', impulse.shape)
         #impulse = self.filter(impulse.squeeze(-1), t)
         # TODO Put back maybe?
         impulse = impulse * self.envelope.unsqueeze(-1)

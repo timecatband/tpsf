@@ -6,6 +6,7 @@ from effects.filters import LearnableLowpass, LearnableHighpass, LearnableBandre
 import torchaudio
 from effects.equalizers import NotchFilter
 from synth.decorator import synthd
+from effects.reverb import LearnableParametricIRReverb
 
 
 
@@ -41,7 +42,7 @@ def karplus_strong_vectorized(wavetable, n_samples, decay_factor):
     wavetable[indices] = samples
 
     return samples
-def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_line, feedbackamt, distortion=None):
+def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_line, feedbackamt, distortion=None, reverb=None):
     wavetable_size = wavetable.size(0)
     # Initialize the output tensor
     samples = torch.empty(n_samples).to(wavetable.device)
@@ -52,16 +53,20 @@ def karplus_strong_roll_vectorized(wavetable, n_samples, decay_factor, feedback_
     current_wavetable = current_wavetable.detach()
    # current_wavetable.requires_grad = True
     feedback_amt = feedbackamt.clamp(0.01,1)
+    feedback_line = distortion(feedback_line, torch.tensor([0.0]))
+    feedback_line = reverb(feedback_line, torch.tensor([0.0]))
 
     # Vectorized processing of the entire wavetable
     for i in range(n_samples // wavetable_size):
         start_index = i * wavetable_size        
         # Roll the wavetable to right by one position
+
         
         feedback = feedbackamt*feedback_line[start_index:start_index + wavetable_size]
-        feedback = distortion(feedback, torch.tensor([0.0]))       
-        current_wavetable += feedback
+        current_wavetable += feedback                
         rolled_wavetable = torch.roll(current_wavetable, shifts=1, dims=0)
+
+        
         
         # Update wavetable using decayed average of current and rolled values
         current_wavetable = decay_factor * 0.5 * (current_wavetable + rolled_wavetable)
@@ -112,6 +117,7 @@ class KarplusSynth(nn.Module):
         self.num_latents = 7      
         # TODO Disable
         self.distortion = SoftClipping()
+        self.reverb = LearnableParametricIRReverb(length=2048,sampling_rate=44100)
         
     def forward(self, feedback_line, freq_rad: float, output_length_samples: int, h, t, pitches=None):
         latents = h[:,self.latent_start_dim:self.latent_start_dim+self.num_latents]
@@ -145,7 +151,7 @@ class KarplusSynth(nn.Module):
       #  wavetable = wavetable.detach().requires_grad_(False)
         
         feedbackamt = latents[:,3]
-        out = karplus_strong_roll_vectorized(wavetable, output_length_samples, decay, feedback_line, feedbackamt, self.distortion)
+        out = karplus_strong_roll_vectorized(wavetable, output_length_samples, decay, feedback_line, feedbackamt, self.distortion, self.reverb)
         #print("out abs sum: ", out.abs().sum())
         out[-256:] *= self.fade_over_256
        # out *= h[:,0]

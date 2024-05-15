@@ -5,7 +5,7 @@ from effects.decorator import effect
 
 @effect("SubtractiveSynth")
 class SubtractiveSynthAsEffect(nn.Module):
-    def __init__(self, sr, exp_decay=True):
+    def __init__(self, sr, exp_decay=False):
         super().__init__()
         self.synth = SubtractiveNoiseSynth(sr)
         self.blend = nn.Parameter(torch.tensor([0.1]))

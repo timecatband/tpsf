@@ -165,10 +165,8 @@ class LearnableHarmonicSynth(nn.Module):
             freq = torch.tensor(pitches).to(self.device) * 2 * 3.14159
             freq = freq / self.sr
          #    Pad pitches to length of time
-            print("Freq shape: ", freq.shape)
             freq = torch.nn.functional.pad(freq, (0, output_length_samples - freq.shape[0]), mode='constant', value=0)
             max_freq = freq.max()
-            print("freq shape and output length: ", freq.shape, output_length_samples)
         else:
             max_freq = freq
             
